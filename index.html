@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Moteur de Recherche Stylé</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9fb;
+      color: #2d3436;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 30px;
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+      background: white;
+      border-radius: 50px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .search-container input {
+      flex: 1;
+      padding: 14px 20px;
+      font-size: 16px;
+      border: none;
+      outline: none;
+    }
+
+    .search-container button {
+      background: #0984e3;
+      border: none;
+      color: white;
+      padding: 12px 20px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: background 0.2s ease;
+    }
+
+    .search-container button:hover {
+      background: #065bb5;
+    }
+
+    #results {
+      margin-top: 30px;
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .result {
+      background: white;
+      border-radius: 10px;
+      padding: 15px 20px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .result a {
+      color: #0984e3;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .result a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🔍 Moteur de Recherche Stylé</h1>
+
+  <div class="search-container">
+    <input type="text" id="searchInput" placeholder="Tape ta recherche ici...">
+    <button onclick="effectuerRecherche()">🔎</button>
+  </div>
+
+  <div id="results"></div>
+
+  <script>
+    function effectuerRecherche() {
+      const query = document.getElementById('searchInput').value.trim();
+      if (!query) return alert("Entre une recherche !");
+
+      // Simulation de résultats (à remplacer par un vrai appel backend)
+      const résultatsSimulés = [
+        { titre: "Exemple 1", lien: "https://exemple1.com" },
+        { titre: "Exemple 2", lien: "https://exemple2.com" }
+      ];
+
+      const resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = "";
+
+      résultatsSimulés.forEach(r => {
+        const div = document.createElement("div");
+        div.className = "result";
+        div.innerHTML = `<a href="${r.lien}" target="_blank">${r.titre}</a><br><small>${r.lien}</small>`;
+        resultsDiv.appendChild(div);
+      });
+    }
+  </script>
+
+</body>
+</html>
