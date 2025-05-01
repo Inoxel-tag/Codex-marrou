@@ -196,6 +196,7 @@
   <div class="navbar">
     <button onclick="showSearchPage()">🔍 Recherche</button>
     <button onclick="showChatPage()">💬 Discussion</button>
+    <button onclick="showDissertationPage()">📄 Dissertation</button> <!-- Ajout du bouton pour la dissertation -->
     <button onclick="toggleDarkMode()">🌙 Mode Sombre</button>
     <button onclick="logout()">🚪 Déconnexion</button>
   </div>
@@ -220,15 +221,30 @@
     <button onclick="envoyerMessage()">Envoyer</button>
   </div>
 
+  <div id="dissertationPage" class="container" style="display: none;">
+    <h1>Rédiger une dissertation</h1>
+    <input type="text" id="essaySubject" placeholder="Entrez le sujet de la dissertation...">
+    <button onclick="genererDissertation()">Générer la dissertation</button>
+    <textarea id="essayOutput" rows="10" placeholder="La dissertation générée apparaîtra ici..." readonly></textarea>
+  </div>
+
   <script>
     function showSearchPage() {
       document.getElementById("searchPage").style.display = "block";
       document.getElementById("chatPage").style.display = "none";
+      document.getElementById("dissertationPage").style.display = "none";
     }
 
     function showChatPage() {
       document.getElementById("searchPage").style.display = "none";
       document.getElementById("chatPage").style.display = "block";
+      document.getElementById("dissertationPage").style.display = "none";
+    }
+
+    function showDissertationPage() {
+      document.getElementById("searchPage").style.display = "none";
+      document.getElementById("chatPage").style.display = "none";
+      document.getElementById("dissertationPage").style.display = "block";
     }
 
     function envoyerMessage() {
@@ -277,6 +293,49 @@
         .catch(err => {
           console.error(err);
           alert("Erreur lors de la recherche");
+        });
+    }
+
+    function genererDissertation() {
+      const sujet = document.getElementById("essaySubject").value.trim();
+      const output = document.getElementById("essayOutput");
+      if (!sujet) return alert("Entre un sujet");
+
+      const url = `https://fr.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(sujet)}`;
+
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          if (!data.extract) {
+            output.value = "Aucun contenu trouvé sur Wikipédia pour ce sujet.";
+            return;
+          }
+
+          const contenu = data.extract;
+
+          output.value = `Sujet : ${sujet}
+
+Introduction :
+Le sujet "${sujet}" soulève une problématique importante dans notre société contemporaine. Afin de mieux comprendre ses enjeux, il est essentiel d'en analyser les origines, les implications et les perspectives. Pour cela, nous nous appuierons notamment sur les informations issues de Wikipédia.
+
+Développement :
+1. Contexte et définitions :
+${contenu}
+
+2. Analyse critique :
+Ce sujet nous permet d’aborder des questions fondamentales liées à l'histoire, à la société ou encore à la science. Il est important de le situer dans son contexte global afin de mieux en comprendre les répercussions.
+
+3. Enjeux actuels :
+Aujourd’hui, "${sujet}" demeure un sujet de réflexion et de débat. Qu’il s’agisse de ses applications concrètes ou de ses implications théoriques, il continue d’interroger chercheurs, politiques et citoyens.
+
+Conclusion :
+En résumé, "${sujet}" constitue un thème à la fois complexe et passionnant. Grâce à notre exploration, notamment à travers les données disponibles sur Wikipédia, nous avons pu en dégager les principaux axes de réflexion.`;
+
+          output.scrollTop = 0;
+        })
+        .catch(error => {
+          console.error(error);
+          output.value = "Erreur lors de la récupération de l'article Wikipédia.";
         });
     }
 
