@@ -70,8 +70,7 @@
       color: #fff;
     }
 
-    /* Styles généraux pour les sections */
-    .container, .chat-container, .dissertation-container, .therapy-container {
+    .container, .chat-container {
       background-color: var(--bg-alt);
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       border-radius: 12px;
@@ -81,35 +80,45 @@
       margin: 90px auto 20px auto;
     }
 
-    .container h1, .chat-container h2, .dissertation-container h2, .therapy-container h2 {
+    .container h1, .chat-container h2 {
       text-align: center;
       margin-bottom: 20px;
       color: var(--accent);
     }
 
-    /* Style spécifique à la page de recherche */
-    .container {
+    .search-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
       background-color: var(--box);
+      border-radius: 50px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
     .search-bar input {
-      width: 80%;
-      padding: 12px;
-      margin-right: 10px;
-      border-radius: 10px;
-      border: 1px solid #ddd;
+      width: 75%;
+      padding: 10px;
+      border: none;
+      border-radius: 50px;
       font-size: 1rem;
-      color: var(--text);
+      outline: none;
+      background-color: #fff;
+    }
+
+    body.dark .search-bar input {
+      background-color: #444;
+      color: #fff;
     }
 
     .search-bar button {
-      padding: 12px 18px;
-      background-color: var(--accent);
-      color: #fff;
+      padding: 10px 15px;
       border: none;
-      border-radius: 10px;
+      background-color: var(--accent);
+      color: #ffffff;
+      font-size: 1rem;
       cursor: pointer;
-      font-size: 1.1rem;
+      border-radius: 50px;
       transition: background-color 0.3s ease;
     }
 
@@ -119,151 +128,59 @@
 
     .results table {
       width: 100%;
-      margin-top: 20px;
       border-collapse: collapse;
+      margin-top: 20px;
     }
 
-    .results table th, .results table td {
-      padding: 12px;
+    .results table th,
+    .results table td {
+      padding: 10px;
       text-align: left;
+      border-bottom: 1px solid #ddd;
     }
 
-    .results table th {
-      background-color: var(--accent);
-      color: white;
+    .results img {
+      margin-top: 10px;
+      border-radius: 8px;
+      max-width: 100px;
     }
 
-    /* Style spécifique à la page de chat */
     .chat-box {
-      background-color: #f5f5f5;
-      padding: 15px;
-      border-radius: 10px;
       max-height: 300px;
       overflow-y: auto;
-    }
-
-    .chat-container textarea {
-      width: 100%;
-      padding: 15px;
-      margin-top: 15px;
-      border-radius: 10px;
-      border: 1px solid #ddd;
-      background-color: #fafafa;
-      font-size: 1.2rem;
-      color: var(--text);
-      resize: none;
-    }
-
-    .chat-container button {
-      padding: 12px 18px;
-      background-color: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      font-size: 1.1rem;
-    }
-
-    .chat-container button:hover {
-      background-color: var(--hover);
-    }
-
-    /* Style spécifique à la page de dissertation */
-    .dissertation-container {
       background-color: var(--box);
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .dissertation-container input {
-      width: 100%;
-      padding: 15px;
-      margin-top: 15px;
+      padding: 10px;
       border-radius: 10px;
-      border: 1px solid #ddd;
-      background-color: #fafafa;
-      font-size: 1.2rem;
-      color: var(--text);
-    }
-
-    .dissertation-container textarea {
-      width: 100%;
-      padding: 15px;
-      margin-top: 15px;
-      border-radius: 10px;
-      border: 1px solid #ddd;
-      background-color: #fafafa;
-      font-size: 1.2rem;
-      color: var(--text);
-      resize: none;
-      height: 250px;
-    }
-
-    .dissertation-container .essay-section {
-      margin-bottom: 20px;
-    }
-
-    .dissertation-container .essay-section h3 {
-      font-size: 1.5rem;
       margin-bottom: 10px;
-      color: var(--accent);
+      border: 1px solid #ddd;
     }
 
-    .dissertation-container .essay-section p {
-      font-size: 1.1rem;
-      line-height: 1.5;
-      margin: 10px 0;
+    .chat-box p {
+      margin-bottom: 10px;
     }
 
-    .dissertation-container button {
-      padding: 12px 18px;
-      background-color: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      font-size: 1.1rem;
-    }
-
-    .dissertation-container button:hover {
-      background-color: var(--hover);
-    }
-
-    .therapy-container {
-      background-color: var(--box);
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .therapy-container textarea {
+    textarea {
       width: 100%;
-      padding: 15px;
-      margin-top: 15px;
+      padding: 10px;
       border-radius: 10px;
       border: 1px solid #ddd;
-      background-color: #fafafa;
-      font-size: 1.2rem;
-      color: var(--text);
       resize: none;
-      height: 250px;
+      margin-bottom: 10px;
+      background-color: var(--box);
+      color: var(--text);
     }
 
-    .therapy-container button {
-      padding: 12px 18px;
+    button {
+      padding: 10px 15px;
       background-color: var(--accent);
       color: #fff;
       border: none;
       border-radius: 10px;
       cursor: pointer;
       transition: background-color 0.3s ease;
-      font-size: 1.1rem;
     }
 
-    .therapy-container button:hover {
+    button:hover {
       background-color: var(--hover);
     }
 
@@ -279,8 +196,7 @@
   <div class="navbar">
     <button onclick="showSearchPage()">🔍 Recherche</button>
     <button onclick="showChatPage()">💬 Discussion</button>
-    <button onclick="showDissertationPage()">📖 Dissertation</button>
-    <button onclick="showTherapyPage()">🧠 Thérapie</button>
+    <button onclick="showDissertationPage()">📄 Dissertation</button> <!-- Ajout du bouton pour la dissertation -->
     <button onclick="toggleDarkMode()">🌙 Mode Sombre</button>
     <button onclick="logout()">🚪 Déconnexion</button>
   </div>
@@ -289,7 +205,7 @@
     <h1>Le codex</h1>
     <div class="username-display" id="usernameDisplay"></div>
     <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Tape ta recherche ici..." onkeypress="handleSearchKeyPress(event)">
+      <input type="text" id="searchInput" placeholder="Tape ta recherche ici...">
       <button onclick="effectuerRecherche()">Rechercher</button>
     </div>
     <div class="results" id="results"></div>
@@ -305,35 +221,11 @@
     <button onclick="envoyerMessage()">Envoyer</button>
   </div>
 
-  <div id="dissertationPage" class="dissertation-container" style="display: none;">
-    <h2>Rédiger une Dissertation</h2>
-    <div class="username-display" id="usernameDisplayDissertation"></div>
-    <input type="text" id="essaySubject" placeholder="Entrez le sujet de la dissertation" />
+  <div id="dissertationPage" class="container" style="display: none;">
+    <h1>Rédiger une dissertation</h1>
+    <input type="text" id="essaySubject" placeholder="Entrez le sujet de la dissertation...">
     <button onclick="genererDissertation()">Générer la dissertation</button>
-    
-    <div id="generatedEssay" style="display: none;">
-      <div class="essay-section">
-        <h3>Introduction</h3>
-        <p id="introduction"></p>
-      </div>
-      <div class="essay-section">
-        <h3>Corps de la dissertation</h3>
-        <p id="body"></p>
-      </div>
-      <div class="essay-section">
-        <h3>Conclusion</h3>
-        <p id="conclusion"></p>
-      </div>
-    </div>
-    
-    <textarea id="essayOutput" rows="10" placeholder="La dissertation sera générée ici..." readonly></textarea>
-  </div>
-
-  <div id="therapyPage" class="therapy-container" style="display: none;">
-    <h2>Thérapie</h2>
-    <div class="username-display" id="usernameDisplayTherapy"></div>
-    <textarea id="therapyInput" placeholder="Exprimez vos pensées..." rows="6"></textarea>
-    <button onclick="soumettreTherapie()">Soumettre</button>
+    <textarea id="essayOutput" rows="10" placeholder="La dissertation générée apparaîtra ici..." readonly></textarea>
   </div>
 
   <script>
@@ -341,124 +233,138 @@
       document.getElementById("searchPage").style.display = "block";
       document.getElementById("chatPage").style.display = "none";
       document.getElementById("dissertationPage").style.display = "none";
-      document.getElementById("therapyPage").style.display = "none";
     }
 
     function showChatPage() {
       document.getElementById("searchPage").style.display = "none";
       document.getElementById("chatPage").style.display = "block";
       document.getElementById("dissertationPage").style.display = "none";
-      document.getElementById("therapyPage").style.display = "none";
     }
 
     function showDissertationPage() {
       document.getElementById("searchPage").style.display = "none";
       document.getElementById("chatPage").style.display = "none";
       document.getElementById("dissertationPage").style.display = "block";
-      document.getElementById("therapyPage").style.display = "none";
     }
 
-    function showTherapyPage() {
-      document.getElementById("searchPage").style.display = "none";
-      document.getElementById("chatPage").style.display = "none";
-      document.getElementById("dissertationPage").style.display = "none";
-      document.getElementById("therapyPage").style.display = "block";
-    }
+    function envoyerMessage() {
+      const input = document.getElementById("chatInput");
+      const message = input.value.trim();
+      if (!message) return;
 
-    function toggleDarkMode() {
-      document.body.classList.toggle('dark');
-    }
-
-    function logout() {
-      alert("Déconnexion réussie !");
-    }
-
-    function genererDissertation() {
-      const subject = document.getElementById("essaySubject").value.trim();
-      if (!subject) return alert("Entrez un sujet de dissertation");
-
-      const url = `https://fr.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(subject)}`;
-
-      fetch(url)
-        .then(res => res.json())
-        .then(data => {
-          if (!data.extract) return alert("Aucune information trouvée pour ce sujet");
-
-          // Définir l'introduction
-          const introText = `Introduction : ${data.extract}`;
-          document.getElementById("introduction").textContent = introText;
-
-          // Développement rédigé
-          const bodyText = `
-            Le sujet de cette dissertation est particulièrement vaste et soulève plusieurs aspects essentiels. En premier lieu, nous devons aborder les principaux éléments historiques et théoriques relatifs à ce sujet. Cela nous permettra de mieux comprendre les enjeux de ce domaine.
-
-            Dans un deuxième temps, il sera nécessaire d'examiner les implications pratiques de ce sujet. Une analyse approfondie des répercussions dans le monde moderne est essentielle pour bien cerner les enjeux actuels.
-
-            Enfin, pour conclure, il sera pertinent de traiter des perspectives d'avenir liées à ce sujet et de considérer ses impacts dans différents contextes. La compréhension de ces enjeux nous permettra de proposer des solutions concrètes adaptées aux défis futurs.
-          `;
-          document.getElementById("body").innerHTML = bodyText;
-
-          // Conclusion
-          const conclusionText = `
-            En conclusion, ce sujet soulève des questions fondamentales qui dépassent le cadre académique. Sa compréhension et ses implications sont cruciales pour le développement de nombreuses disciplines, et il est essentiel d'étudier les différents aspects évoqués dans cette dissertation.
-          `;
-          document.getElementById("conclusion").textContent = conclusionText;
-
-          // Afficher la dissertation générée
-          document.getElementById("generatedEssay").style.display = "block";
-        })
-        .catch(() => alert("Erreur lors de la génération de la dissertation"));
-    }
-
-    function soumettreTherapie() {
-      const message = document.getElementById("therapyInput").value.trim();
-      if (!message) return alert("Veuillez exprimer vos pensées.");
-      
-      // Affiche un message de confirmation ou traitement de thérapie
-      alert("Merci pour votre partage. Nous traiterons vos pensées.");
-      document.getElementById("therapyInput").value = ""; // Clear text area
+      const chatBox = document.getElementById("chatBox");
+      const newMsg = document.createElement("p");
+      const username = localStorage.getItem("username") || "Utilisateur";
+      newMsg.textContent = `${username} : ${message}`;
+      chatBox.appendChild(newMsg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+      input.value = "";
     }
 
     function effectuerRecherche() {
       const query = document.getElementById("searchInput").value.trim();
-      if (!query) return alert("Veuillez entrer un terme de recherche.");
-      
-      // Simuler une recherche avec des résultats plus réalistes
-      const results = [
-        { title: `Résultat 1 pour "${query}"`, content: "Ceci est le premier résultat de votre recherche." },
-        { title: `Résultat 2 pour "${query}"`, content: "Un autre résultat intéressant lié à votre recherche." },
-        { title: `Information sur "${query}"`, content: "Détails supplémentaires sur le sujet recherché." }
-      ];
-      
-      let html = `<table>
-        <thead><tr><th>Résultats pour : "${query}"</th></tr></thead>
-        <tbody>`;
-      
-      results.forEach(result => {
-        html += `<tr>
-          <td>
-            <strong>${result.title}</strong><br>
-            ${result.content}
-          </td>
-        </tr>`;
-      });
-      
-      html += `</tbody></table>`;
-      document.getElementById("results").innerHTML = html;
+      if (!query) return alert("Entrez un terme de recherche");
+
+      const url = `https://fr.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`;
+
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          const results = document.getElementById("results");
+          results.innerHTML = "";
+
+          if (data.extract) {
+            results.innerHTML = `
+              <table>
+                <tr><th>Titre</th><th>Description</th></tr>
+                <tr>
+                  <td>
+                    <a href="${data.content_urls.desktop.page}" target="_blank">${data.title}</a>
+                    ${data.thumbnail ? `<br><img src="${data.thumbnail.source}" alt="${data.title}">` : ""}
+                  </td>
+                  <td>${data.extract}</td>
+                </tr>
+              </table>
+            `;
+          } else {
+            results.innerHTML = "<p>Aucun résultat trouvé.</p>";
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          alert("Erreur lors de la recherche");
+        });
     }
 
-    function handleSearchKeyPress(event) {
-      if (event.key === 'Enter') {
-        effectuerRecherche();
+    function genererDissertation() {
+      const sujet = document.getElementById("essaySubject").value.trim();
+      const output = document.getElementById("essayOutput");
+      if (!sujet) return alert("Entre un sujet");
+
+      const url = `https://fr.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(sujet)}`;
+
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          if (!data.extract) {
+            output.value = "Aucun contenu trouvé sur Wikipédia pour ce sujet.";
+            return;
+          }
+
+          const contenu = data.extract;
+
+          output.value = `Sujet : ${sujet}
+
+Introduction :
+Le sujet "${sujet}" soulève une problématique importante dans notre société contemporaine. Afin de mieux comprendre ses enjeux, il est essentiel d'en analyser les origines, les implications et les perspectives. Pour cela, nous nous appuierons notamment sur les informations issues de Wikipédia.
+
+Développement :
+1. Contexte et définitions :
+${contenu}
+
+2. Analyse critique :
+Ce sujet nous permet d’aborder des questions fondamentales liées à l'histoire, à la société ou encore à la science. Il est important de le situer dans son contexte global afin de mieux en comprendre les répercussions.
+
+3. Enjeux actuels :
+Aujourd’hui, "${sujet}" demeure un sujet de réflexion et de débat. Qu’il s’agisse de ses applications concrètes ou de ses implications théoriques, il continue d’interroger chercheurs, politiques et citoyens.
+
+Conclusion :
+En résumé, "${sujet}" constitue un thème à la fois complexe et passionnant. Grâce à notre exploration, notamment à travers les données disponibles sur Wikipédia, nous avons pu en dégager les principaux axes de réflexion.`;
+
+          output.scrollTop = 0;
+        })
+        .catch(error => {
+          console.error(error);
+          output.value = "Erreur lors de la récupération de l'article Wikipédia.";
+        });
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+      localStorage.setItem("darkMode", document.body.classList.contains("dark"));
+    }
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "index.html";
+    }
+
+    // Affichage du nom d'utilisateur
+    window.onload = () => {
+      if (localStorage.getItem("darkMode") === "true") {
+        document.body.classList.add("dark");
       }
-    }
 
-    // Fonction pour afficher le nom de l'utilisateur
-    document.getElementById("usernameDisplay").innerText = "Utilisateur : Mael";
-    document.getElementById("usernameDisplayChat").innerText = "Utilisateur : Mael";
-    document.getElementById("usernameDisplayDissertation").innerText = "Utilisateur : Mael";
-    document.getElementById("usernameDisplayTherapy").innerText = "Utilisateur : Mael";
+      const username = localStorage.getItem("username");
+      if (!username) {
+        window.location.href = "index.html";
+        return;
+      }
 
+      document.getElementById("usernameDisplay").textContent = `Connecté en tant que : ${username}`;
+      document.getElementById("usernameDisplayChat").textContent = `Connecté en tant que : ${username}`;
+    };
   </script>
+
 </body>
 </html>
