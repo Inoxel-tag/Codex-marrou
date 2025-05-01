@@ -1,197 +1,47 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Moteur de recherche stylé</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: auto;
-      padding: 20px;
-    }
-
-    .tabs {
-      display: flex;
-      margin-bottom: 20px;
-    }
-
-    .tab {
-      padding: 10px 20px;
-      cursor: pointer;
-      background-color: #ddd;
-      border-radius: 5px 5px 0 0;
-      margin-right: 5px;
-    }
-
-    .tab.active {
-      background-color: #fff;
-      font-weight: bold;
-    }
-
-    .tab-content {
-      display: none;
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 0 0 8px 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    .tab-content.active {
-      display: block;
-    }
-
-    .search-bar {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    input[type="text"] {
-      flex: 1;
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-    }
-
-    button {
-      font-family: inherit;
-      font-size: 20px;
-      background: royalblue;
-      color: white;
-      padding: 0.7em 1em;
-      padding-left: 0.9em;
-      display: flex;
-      align-items: center;
-      border: none;
-      border-radius: 16px;
-      overflow: hidden;
-      transition: all 0.2s;
-      cursor: pointer;
-    }
-
-    button span {
-      display: block;
-      margin-left: 0.3em;
-      transition: all 0.3s ease-in-out;
-    }
-
-    button svg {
-      display: block;
-      transform-origin: center center;
-      transition: transform 0.3s ease-in-out;
-    }
-
-    button:hover .svg-wrapper {
-      animation: fly-1 0.6s ease-in-out infinite alternate;
-    }
-
-    button:hover svg {
-      transform: translateX(1.2em) rotate(45deg) scale(1.1);
-    }
-
-    button:hover span {
-      transform: translateX(5em);
-    }
-
-    button:active {
-      transform: scale(0.95);
-    }
-
-    @keyframes fly-1 {
-      from {
-        transform: translateY(0.1em);
-      }
-
-      to {
-        transform: translateY(-0.1em);
-      }
-    }
-
-    .results {
-      margin-top: 20px;
-    }
-
-    .results table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .results th,
-    .results td {
-      padding: 10px;
-      border: 1px solid #ccc;
-    }
-
-    .message-area {
-      margin-top: 20px;
-    }
-
-    .message {
-      background: #e0e0ff;
-      padding: 10px;
-      border-radius: 8px;
-      margin-bottom: 10px;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moteur de Recherche Stylé avec Discussion</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>🔍 Moteur de recherche stylé</h1>
 
-    <div class="tabs">
-      <div class="tab active" onclick="switchTab('recherche')">Recherche</div>
-      <div class="tab" onclick="switchTab('discussion')">Discussion</div>
+  <!-- Menu de Navigation -->
+  <div class="navbar">
+    <button onclick="showSearchPage()">Moteur de Recherche</button>
+    <button onclick="showChatPage()">Discussion</button>
+  </div>
+
+  <!-- Contenu de la page -->
+  <div id="searchPage" class="container">
+    <h1>🔍 Moteur de Recherche Stylé</h1>
+
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Tape ta recherche ici...">
+      <button onclick="effectuerRecherche()">Rechercher</button>
     </div>
 
-    <div id="recherche" class="tab-content active">
-      <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Tape ta recherche ici..." />
-        <button onclick="effectuerRecherche()">
-          <div class="svg-wrapper">
-            <svg height="24" width="24" viewBox="0 0 24 24">
-              <path fill="white" d="M2 21l21-9L2 3v7l15 2-15 2z" />
-            </svg>
-          </div>
-          <span>Rechercher</span>
-        </button>
-      </div>
-      <div class="results" id="results"></div>
-    </div>
+    <div class="results" id="results"></div>
+  </div>
 
-    <div id="discussion" class="tab-content">
-      <div class="search-bar">
-        <input type="text" id="messageInput" placeholder="Écris ton message...">
-        <button onclick="envoyerMessage()">
-          <div class="svg-wrapper">
-            <svg height="24" width="24" viewBox="0 0 24 24">
-              <path fill="white" d="M2 21l21-9L2 3v7l15 2-15 2z" />
-            </svg>
-          </div>
-          <span>Envoyer</span>
-        </button>
-      </div>
-      <div class="message-area" id="messages"></div>
+  <!-- Page de Discussion -->
+  <div id="chatPage" class="chat-container" style="display: none;">
+    <h2>💬 Discussion</h2>
+    <div class="chat-box" id="chatBox">
+      <p><strong>Bienvenue dans la discussion ! Pose tes questions ou partage tes idées !</strong></p>
     </div>
+    <textarea id="chatInput" placeholder="Tape ton message ici..." rows="3"></textarea>
+    
+    <!-- BOUTON ENVOYER MODIFIÉ -->
+    <button onclick="envoyerMessage()" style="background-color:#6200ea; color:white; padding:12px 20px; font-weight:bold; border-radius:20px; border:none; box-shadow:0 4px 10px rgba(0,0,0,0.2); transition:background-color 0.3s ease;">
+      ✉️ Envoyer
+    </button>
   </div>
 
   <script>
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-      document.querySelector(`.tab[onclick="switchTab('${tabId}')"]`).classList.add('active');
-      document.getElementById(tabId).classList.add('active');
-    }
-
+    // Fonction de recherche
     function effectuerRecherche() {
       const query = document.getElementById('searchInput').value.trim();
       if (!query) return alert("Entre une recherche !");
@@ -205,6 +55,23 @@
           resultsDiv.innerHTML = "";
 
           if (data.extract) {
+            let weaknesses = "";
+            let remedies = "";
+
+            if (data.title.toLowerCase().includes("monstre")) {
+              if (data.extract.toLowerCase().includes("faiblesse")) {
+                weaknesses = `<p><strong>Faiblesses :</strong> ${data.extract.split("faiblesse")[1].split(".")[0]}</p>`;
+              } else {
+                weaknesses = `<p><strong>Faiblesses :</strong> Aucune faiblesse spécifique mentionnée dans l'extrait.</p>`;
+              }
+            } else if (data.title.toLowerCase().includes("maladie")) {
+              if (data.extract.toLowerCase().includes("remède")) {
+                remedies = `<p><strong>Remèdes :</strong> ${data.extract.split("remède")[1].split(".")[0]}</p>`;
+              } else {
+                remedies = `<p><strong>Remèdes :</strong> Aucun remède spécifique mentionné dans l'extrait.</p>`;
+              }
+            }
+
             resultsDiv.innerHTML = `
               <table>
                 <tr><th>Titre</th><th>Description</th></tr>
@@ -216,6 +83,8 @@
                   <td>${data.extract}</td>
                 </tr>
               </table>
+              ${weaknesses} 
+              ${remedies}
             `;
           } else {
             resultsDiv.innerHTML = "<p>Aucun résultat trouvé sur Wikipédia.</p>";
@@ -227,19 +96,31 @@
         });
     }
 
+    // Fonction pour envoyer un message dans la discussion
     function envoyerMessage() {
-      const messageInput = document.getElementById("messageInput");
-      const messageText = messageInput.value.trim();
-      if (!messageText) return;
+      const message = document.getElementById("chatInput").value.trim();
+      if (!message) return;
 
-      const messagesDiv = document.getElementById("messages");
-      const newMessage = document.createElement("div");
-      newMessage.className = "message";
-      newMessage.textContent = messageText;
+      const chatBox = document.getElementById("chatBox");
+      const newMessage = document.createElement("p");
+      newMessage.textContent = `Utilisateur: ${message}`;
+      chatBox.appendChild(newMessage);
+      chatBox.scrollTop = chatBox.scrollHeight;
+      document.getElementById("chatInput").value = "";
+    }
 
-      messagesDiv.appendChild(newMessage);
-      messageInput.value = "";
+    // Afficher la page de recherche
+    function showSearchPage() {
+      document.getElementById("searchPage").style.display = "block";
+      document.getElementById("chatPage").style.display = "none";
+    }
+
+    // Afficher la page de discussion
+    function showChatPage() {
+      document.getElementById("searchPage").style.display = "none";
+      document.getElementById("chatPage").style.display = "block";
     }
   </script>
+
 </body>
 </html>
