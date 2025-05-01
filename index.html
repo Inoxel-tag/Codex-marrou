@@ -67,27 +67,24 @@
   </div>
 
   <script>
-    // Fonction de gestion de la connexion
     function handleLogin() {
       const username = document.getElementById("username").value;
       const password = document.getElementById("password").value;
       const errorMessage = document.getElementById("error-message");
 
-      // Validation simple
       if (!username || !password) {
         errorMessage.textContent = "Veuillez entrer votre nom d'utilisateur et votre mot de passe.";
         return;
       }
 
-      // Chargement du fichier JSON des utilisateurs
       fetch('users.json')
         .then(response => response.json())
         .then(users => {
           const user = users.find(u => u.username === username && u.password === password);
           if (user) {
-            // Sauvegarde de l'état de la connexion et redirection vers le tableau de bord
             localStorage.setItem("isLoggedIn", "true");
-            window.location.href = "dashboard.html";  // Redirection vers le tableau de bord
+            localStorage.setItem("username", username); // On enregistre le nom
+            window.location.href = "dashboard.html";
           } else {
             errorMessage.textContent = "Identifiants incorrects. Essayez à nouveau.";
           }
