@@ -12,6 +12,7 @@
   <div class="navbar">
     <button onclick="showSearchPage()">Moteur de Recherche</button>
     <button onclick="showChatPage()">Discussion</button>
+    <button onclick="toggleDarkMode()">🌙 / ☀️</button> <!-- Bouton Mode Sombre -->
   </div>
 
   <!-- Contenu de la page -->
@@ -101,8 +102,8 @@
       const newMessage = document.createElement("p");
       newMessage.textContent = `Utilisateur: ${message}`;
       chatBox.appendChild(newMessage);
-      chatBox.scrollTop = chatBox.scrollHeight;  // Descendre vers le bas de la boîte de chat
-      document.getElementById("chatInput").value = "";  // Réinitialiser le champ de texte
+      chatBox.scrollTop = chatBox.scrollHeight;
+      document.getElementById("chatInput").value = "";
     }
 
     // Afficher la page de recherche
@@ -116,6 +117,11 @@
       document.getElementById("searchPage").style.display = "none";
       document.getElementById("chatPage").style.display = "block";
     }
+
+    // Mode sombre
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+    }
   </script>
 
   <style>
@@ -128,6 +134,48 @@
       align-items: center;
       justify-content: flex-start;
       min-height: 100vh;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    /* Mode sombre */
+    body.dark-mode {
+      background-color: #1e1e1e;
+      color: #f1f1f1;
+    }
+
+    body.dark-mode .container,
+    body.dark-mode .chat-container {
+      background-color: #2c2c2c;
+      color: #fff;
+    }
+
+    body.dark-mode .search-bar {
+      background-color: #333;
+    }
+
+    body.dark-mode .search-bar input {
+      background-color: #444;
+      color: #fff;
+    }
+
+    body.dark-mode .search-bar button,
+    body.dark-mode button {
+      background-color: #555;
+    }
+
+    body.dark-mode .chat-box {
+      background-color: #3a3a3a;
+      border-color: #555;
+    }
+
+    body.dark-mode textarea {
+      background-color: #444;
+      color: #fff;
+      border-color: #555;
+    }
+
+    body.dark-mode a {
+      color: #80bfff;
     }
 
     /* Barre de navigation */
@@ -229,7 +277,6 @@
       color: #333;
     }
 
-    /* Champ de texte et bouton */
     textarea {
       width: 100%;
       padding: 10px;
@@ -254,4 +301,4 @@
   </style>
 
 </body>
-</html> 
+</html>
