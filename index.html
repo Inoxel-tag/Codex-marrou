@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head><link rel="stylesheet" href="style.css">
-
+<head>
+  <link rel="stylesheet" href="style.css">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Moteur de Recherche Stylé</title>
@@ -96,21 +96,30 @@
       const query = document.getElementById('searchInput').value.trim();
       if (!query) return alert("Entre une recherche !");
 
-      // Simulation de résultats (à remplacer par un vrai appel backend)
-      const résultatsSimulés = [
-        { titre: "Exemple 1", lien: "https://exemple1.com" },
-        { titre: "Exemple 2", lien: "https://exemple2.com" }
-      ];
+      const url = `https://fr.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`;
 
-      const resultsDiv = document.getElementById("results");
-      resultsDiv.innerHTML = "";
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          const resultsDiv = document.getElementById("results");
+          resultsDiv.innerHTML = "";
 
-      résultatsSimulés.forEach(r => {
-        const div = document.createElement("div");
-        div.className = "result";
-        div.innerHTML = `<a href="${r.lien}" target="_blank">${r.titre}</a><br><small>${r.lien}</small>`;
-        resultsDiv.appendChild(div);
-      });
+          if (data.extract) {
+            const div = document.createElement("div");
+            div.className = "result";
+            div.innerHTML = `
+              <a href="${data.content_urls.desktop.page}" target="_blank">${data.title}</a><br>
+              <p>${data.extract}</p>
+            `;
+            resultsDiv.appendChild(div);
+          } else {
+            resultsDiv.innerHTML = "<p>Aucun résultat trouvé sur Wikipédia.</p>";
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          alert("Erreur lors de la recherche.");
+        });
     }
   </script>
 
