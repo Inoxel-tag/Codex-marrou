@@ -352,57 +352,49 @@
               </table>
             `;
           } else {
-            results.innerHTML = "<p>Aucun résultat trouvé.</p>";
+            results.innerHTML = "<p>Aucun résultat trouvé</p>";
           }
         })
-        .catch(err => {
-          console.error(err);
-          alert("Erreur lors de la recherche");
-        });
+        .catch(() => alert("Erreur lors de la récupération des résultats"));
     }
 
     function toggleDarkMode() {
       document.body.classList.toggle("dark");
-      localStorage.setItem("darkMode", document.body.classList.contains("dark"));
     }
 
     function logout() {
-      localStorage.clear();
-      window.location.href = "index.html";
+      localStorage.removeItem("username");
+      window.location.href = "/login";
     }
 
     function genererDissertation() {
       const subject = document.getElementById("essaySubject").value.trim();
       if (!subject) return alert("Entrez un sujet de dissertation");
 
-      const introduction = `Introduction : Ce sujet, "${subject}", est d'une grande importance dans le domaine de l'étude des sciences humaines et sociales. Nous allons explorer les aspects clés de ce sujet et examiner ses implications dans le contexte moderne.`;
+      const url = `https://fr.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(subject)}`;
 
-      const body = `Corps de la dissertation : La question de "${subject}" soulève des problématiques essentielles. Tout d'abord, il est crucial de comprendre les concepts fondamentaux associés à ce sujet. Ensuite, nous analyserons les différentes perspectives et théories qui ont émergé autour de ce thème. De plus, nous aborderons les débats actuels et les enjeux qui en découlent dans la société contemporaine.`;
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          if (!data.extract) return alert("Aucune information trouvée pour ce sujet");
 
-      const conclusion = `Conclusion : En somme, le sujet "${subject}" mérite une attention particulière en raison de son impact dans plusieurs domaines. Nous avons vu comment les théories et les recherches actuelles nous aident à mieux comprendre cette question. Pour l'avenir, il est essentiel de continuer à explorer ce sujet afin de mieux appréhender ses évolutions.`;
+          // Définir l'introduction
+          document.getElementById("introduction").textContent = `Introduction : ${data.extract}`;
 
-      document.getElementById("introduction").textContent = introduction;
-      document.getElementById("body").textContent = body;
-      document.getElementById("conclusion").textContent = conclusion;
+          // Exemple de développement en 3 parties, pour personnaliser selon le sujet :
+          document.getElementById("body").innerHTML = `
+            <strong>Partie 1 :</strong> Description générale du sujet. <br>
+            <strong>Partie 2 :</strong> Analyse approfondie avec les aspects majeurs. <br>
+            <strong>Partie 3 :</strong> Application et implication du sujet dans différents contextes.
+          `;
 
-      document.getElementById("generatedEssay").style.display = "block";
+          // Exemple de conclusion générique
+          document.getElementById("conclusion").textContent = "Conclusion : En résumé, ce sujet a des implications profondes dans plusieurs domaines, et sa compréhension est essentielle pour toute personne intéressée par ce thème.";
+
+          document.getElementById("generatedEssay").style.display = "block";
+        })
+        .catch(() => alert("Erreur lors de la génération de la dissertation"));
     }
-
-    window.onload = () => {
-      if (localStorage.getItem("darkMode") === "true") {
-        document.body.classList.add("dark");
-      }
-
-      const username = localStorage.getItem("username");
-      if (!username) {
-        window.location.href = "index.html";
-        return;
-      }
-
-      document.getElementById("usernameDisplay").textContent = `Connecté en tant que : ${username}`;
-      document.getElementById("usernameDisplayChat").textContent = `Connecté en tant que : ${username}`;
-      document.getElementById("usernameDisplayDissertation").textContent = `Connecté en tant que : ${username}`;
-    };
   </script>
 
 </body>
