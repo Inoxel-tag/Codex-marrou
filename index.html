@@ -38,11 +38,19 @@
 
             // Vérifier si l'article concerne un monstre ou une maladie
             if (data.title.toLowerCase().includes("monstre")) {
-              // Si le titre indique un monstre, on suppose qu'il y a une section de faiblesse
-              weaknesses = `<p><strong>Faiblesses :</strong> Recherche des faiblesses liées au monstre dans l'extrait.</p>`;
+              // Si le titre indique un monstre, rechercher des faiblesses dans l'extrait
+              if (data.extract.toLowerCase().includes("faiblesse")) {
+                weaknesses = `<p><strong>Faiblesses :</strong> ${data.extract.split("faiblesse")[1].split(".")[0]}</p>`;
+              } else {
+                weaknesses = `<p><strong>Faiblesses :</strong> Aucune faiblesse spécifique mentionnée dans l'extrait.</p>`;
+              }
             } else if (data.title.toLowerCase().includes("maladie")) {
-              // Si le titre indique une maladie, on suppose qu'il y a une section de remèdes
-              remedies = `<p><strong>Remèdes :</strong> Recherche des remèdes dans l'extrait.</p>`;
+              // Si le titre indique une maladie, rechercher des remèdes dans l'extrait
+              if (data.extract.toLowerCase().includes("remède")) {
+                remedies = `<p><strong>Remèdes :</strong> ${data.extract.split("remède")[1].split(".")[0]}</p>`;
+              } else {
+                remedies = `<p><strong>Remèdes :</strong> Aucun remède spécifique mentionné dans l'extrait.</p>`;
+              }
             }
 
             resultsDiv.innerHTML = `
@@ -60,7 +68,7 @@
               ${remedies}
             `;
           } else {
-            resultsDiv.innerHTML = "<p>Aucun résultat trouvé dans la base de donnée.</p>";
+            resultsDiv.innerHTML = "<p>Aucun résultat trouvé sur Wikipédia.</p>";
           }
         })
         .catch(err => {
