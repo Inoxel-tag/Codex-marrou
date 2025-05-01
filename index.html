@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Moteur de Recherche</title>
+  <title>Connexion - Moteur de Recherche</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -11,79 +11,35 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      flex-direction: column;
       height: 100vh;
       margin: 0;
+      flex-direction: column;
     }
 
-    .navbar {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin-bottom: 20px;
+    .login-container {
+      background-color: #ffffff;
+      padding: 30px;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      width: 300px;
     }
 
-    .navbar button {
-      padding: 10px 20px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .navbar button:hover {
-      background-color: #45a049;
-    }
-
-    .content {
+    h1 {
       text-align: center;
+      color: #4CAF50;
     }
 
-    .search-bar input {
+    input {
+      width: 100%;
       padding: 10px;
-      width: 70%;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
-    .search-bar button {
-      padding: 10px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 5px;
-    }
-
-    .search-bar button:hover {
-      background-color: #45a049;
-    }
-
-    .results {
-      margin-top: 20px;
-    }
-
-    .chat-box {
-      margin-top: 20px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      width: 80%;
-      max-width: 600px;
-      height: 300px;
-      overflow-y: auto;
-    }
-
-    textarea {
-      width: 80%;
-      padding: 10px;
+      margin: 10px 0;
       border-radius: 5px;
       border: 1px solid #ccc;
-      margin-top: 10px;
     }
 
     button {
-      padding: 10px 20px;
+      width: 100%;
+      padding: 10px;
       background-color: #4CAF50;
       color: white;
       border: none;
@@ -94,69 +50,81 @@
     button:hover {
       background-color: #45a049;
     }
+
+    .toggle-links {
+      text-align: center;
+    }
+
+    .error-message {
+      color: red;
+      display: none;
+    }
   </style>
 </head>
 <body>
 
-  <div class="navbar">
-    <button onclick="logout()">Se déconnecter</button>
-  </div>
+  <div class="login-container">
+    <h1>Se connecter</h1>
+    <input type="text" id="username" placeholder="Nom d'utilisateur" />
+    <input type="password" id="password" placeholder="Mot de passe" />
+    <button onclick="login()">Se connecter</button>
 
-  <div class="content">
-    <h1>Bienvenue, <span id="userGreeting"></span></h1>
+    <p class="error-message" id="loginError">Nom d'utilisateur ou mot de passe incorrect</p>
 
-    <!-- Recherche -->
-    <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Tape ta recherche ici..."/>
-      <button onclick="effectuerRecherche()">Rechercher</button>
+    <div class="toggle-links">
+      <p>Pas encore de compte ? <a href="#" onclick="toggleForm()">S'inscrire</a></p>
     </div>
-
-    <div class="results" id="results"></div>
-
-    <!-- Discussion -->
-    <div class="chat-box" id="chatBox">
-      <p><strong>Bienvenue dans la discussion !</strong></p>
-    </div>
-    <textarea id="chatInput" placeholder="Ton message..."></textarea>
-    <button onclick="envoyerMessage()">Envoyer</button>
   </div>
 
   <script>
-    // Vérifier la connexion à la page de dashboard
-    window.onload = function() {
-      const username = localStorage.getItem("username");
+    // Fonction pour la connexion
+    function login() {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
 
-      if (!username) {
-        // Si l'utilisateur n'est pas connecté, rediriger vers la page de connexion
-        window.location.href = "dashboard.html";
+      if (!username || !password) {
+        alert("Veuillez entrer un nom d'utilisateur et un mot de passe.");
+        return;
+      }
+
+      // Simuler la vérification de la connexion
+      const user = localStorage.getItem("username");
+      if (user && username === user) {
+        localStorage.setItem("username", username);
+        window.location.href = "dashboard.html";  // Rediriger vers dashboard après connexion
       } else {
-        document.getElementById("userGreeting").textContent = username;
-      }
-    };
-
-    // Déconnexion
-    function logout() {
-      localStorage.removeItem("username");
-      window.location.href = "dashboard.html"; // Rediriger vers la page de connexion
-    }
-
-    // Effectuer la recherche
-    function effectuerRecherche() {
-      const searchInput = document.getElementById("searchInput").value.trim();
-      if (searchInput) {
-        const resultsDiv = document.getElementById("results");
-        resultsDiv.innerHTML = `<p>Résultats pour: <strong>${searchInput}</strong></p>`;
-        // Ajouter la logique de recherche ici...
+        document.getElementById("loginError").style.display = "block";
       }
     }
 
-    // Fonction de chat
-    function envoyerMessage() {
-      const message = document.getElementById("chatInput").value.trim();
-      if (message) {
-        const chatBox = document.getElementById("chatBox");
-        chatBox.innerHTML += `<p><strong>Toi:</strong> ${message}</p>`;
-        document.getElementById("chatInput").value = ''; // Réinitialiser le champ de texte
+    // Fonction pour l'inscription
+    function signup() {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (!username || !password) {
+        alert("Veuillez entrer un nom d'utilisateur et un mot de passe.");
+        return;
+      }
+
+      // Simuler l'ajout d'un nouvel utilisateur
+      localStorage.setItem("username", username);
+      localStorage.setItem("password", password);
+      alert("Inscription réussie ! Vous pouvez maintenant vous connecter.");
+      toggleForm();  // Revenir à la page de connexion après inscription
+    }
+
+    // Permet de basculer entre les formulaires de connexion et d'inscription
+    function toggleForm() {
+      const formContainer = document.querySelector(".login-container");
+      if (formContainer.querySelector("button").innerText === "Se connecter") {
+        formContainer.querySelector("button").innerText = "S'inscrire";
+        formContainer.querySelector("p").innerHTML = 'Vous avez déjà un compte ? <a href="#" onclick="toggleForm()">Se connecter</a>';
+        formContainer.querySelector("button").setAttribute('onclick', 'signup()');
+      } else {
+        formContainer.querySelector("button").innerText = "Se connecter";
+        formContainer.querySelector("p").innerHTML = 'Pas encore de compte ? <a href="#" onclick="toggleForm()">S\'inscrire</a>';
+        formContainer.querySelector("button").setAttribute('onclick', 'login()');
       }
     }
   </script>
