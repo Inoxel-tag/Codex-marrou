@@ -24,7 +24,6 @@
       const query = document.getElementById('searchInput').value.trim();
       if (!query) return alert("Entre une recherche !");
 
-      // Effectuer la recherche sur Wikipédia, spécifiquement pour les maladies
       const url = `https://fr.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`;
 
       fetch(url)
@@ -34,6 +33,18 @@
           resultsDiv.innerHTML = "";
 
           if (data.extract) {
+            let weaknesses = ""; // Variable pour les faiblesses
+            let remedies = ""; // Variable pour les remèdes
+
+            // Vérifier si l'article concerne un monstre ou une maladie
+            if (data.title.toLowerCase().includes("monstre")) {
+              // Si le titre indique un monstre, on suppose qu'il y a une section de faiblesse
+              weaknesses = `<p><strong>Faiblesses :</strong> Recherche des faiblesses liées au monstre dans l'extrait.</p>`;
+            } else if (data.title.toLowerCase().includes("maladie")) {
+              // Si le titre indique une maladie, on suppose qu'il y a une section de remèdes
+              remedies = `<p><strong>Remèdes :</strong> Recherche des remèdes dans l'extrait.</p>`;
+            }
+
             resultsDiv.innerHTML = `
               <table>
                 <tr><th>Titre</th><th>Description</th></tr>
@@ -45,9 +56,11 @@
                   <td>${data.extract}</td>
                 </tr>
               </table>
+              ${weaknesses} 
+              ${remedies}
             `;
           } else {
-            resultsDiv.innerHTML = "<p>Aucun résultat trouvé dans la base de donnée.</p>";
+            resultsDiv.innerHTML = "<p>Aucun résultat trouvé sur Wikipédia.</p>";
           }
         })
         .catch(err => {
