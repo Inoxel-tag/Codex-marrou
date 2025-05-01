@@ -71,7 +71,7 @@
     }
 
     /* Styles généraux pour les sections */
-    .container, .chat-container, .dissertation-container {
+    .container, .chat-container, .dissertation-container, .therapie-container {
       background-color: var(--bg-alt);
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       border-radius: 12px;
@@ -81,7 +81,7 @@
       margin: 90px auto 20px auto;
     }
 
-    .container h1, .chat-container h2, .dissertation-container h2 {
+    .container h1, .chat-container h2, .dissertation-container h2, .therapie-container h2 {
       text-align: center;
       margin-bottom: 20px;
       color: var(--accent);
@@ -232,26 +232,68 @@
       background-color: var(--hover);
     }
 
-    .username-display {
-      text-align: center;
-      margin: 10px 0;
-      font-weight: bold;
+    /* Nouvelle section "Thérapie" */
+    .therapie-container {
+      background-color: var(--box);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .therapie-container input {
+      width: 100%;
+      padding: 15px;
+      margin-top: 15px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      background-color: #fafafa;
+      font-size: 1.2rem;
+      color: var(--text);
+    }
+
+    .therapie-container textarea {
+      width: 100%;
+      padding: 15px;
+      margin-top: 15px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      background-color: #fafafa;
+      font-size: 1.2rem;
+      color: var(--text);
+      resize: none;
+      height: 250px;
+    }
+
+    .therapie-container button {
+      padding: 12px 18px;
+      background-color: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      font-size: 1.1rem;
+    }
+
+    .therapie-container button:hover {
+      background-color: var(--hover);
     }
   </style>
 </head>
 <body>
 
   <div class="navbar">
-    <button onclick="showSearchPage()">🔍 Recherche</button>
-    <button onclick="showChatPage()">💬 Discussion</button>
-    <button onclick="showDissertationPage()">📖 Dissertation</button>
+    <button onclick="changerSection('search')">🔍 Recherche</button>
+    <button onclick="changerSection('chat')">💬 Discussion</button>
+    <button onclick="changerSection('dissertation')">📖 Dissertation</button>
+    <button onclick="changerSection('therapie')">🧠 Thérapie</button>
     <button onclick="toggleDarkMode()">🌙 Mode Sombre</button>
     <button onclick="logout()">🚪 Déconnexion</button>
   </div>
 
-  <div class="container" id="searchPage">
+  <div class="container" id="search">
     <h1>Le codex</h1>
-    <div class="username-display" id="usernameDisplay"></div>
+    <div class="username-display" id="usernameDisplaySearch"></div>
     <div class="search-bar">
       <input type="text" id="searchInput" placeholder="Tape ta recherche ici...">
       <button onclick="effectuerRecherche()">Rechercher</button>
@@ -259,7 +301,7 @@
     <div class="results" id="results"></div>
   </div>
 
-  <div id="chatPage" class="chat-container" style="display: none;">
+  <div class="chat-container" id="chat" style="display: none;">
     <h2>Discussion</h2>
     <div class="username-display" id="usernameDisplayChat"></div>
     <div class="chat-box" id="chatBox">
@@ -269,7 +311,7 @@
     <button onclick="envoyerMessage()">Envoyer</button>
   </div>
 
-  <div id="dissertationPage" class="dissertation-container" style="display: none;">
+  <div class="dissertation-container" id="dissertation" style="display: none;">
     <h2>Rédiger une Dissertation</h2>
     <div class="username-display" id="usernameDisplayDissertation"></div>
     <input type="text" id="essaySubject" placeholder="Entrez le sujet de la dissertation" />
@@ -293,23 +335,22 @@
     <textarea id="essayOutput" rows="10" placeholder="La dissertation sera générée ici..." readonly></textarea>
   </div>
 
+  <div class="therapie-container" id="therapie" style="display: none;">
+    <h2>Thérapie</h2>
+    <div class="username-display" id="usernameDisplayTherapie"></div>
+    <input type="text" id="sujetTherapie" placeholder="Quel est ton problème ou sujet ?" />
+    <button onclick="genererTherapie()">Générer</button>
+    <textarea id="therapieResultat" rows="10" readonly></textarea>
+  </div>
+
   <script>
-    function showSearchPage() {
-      document.getElementById("searchPage").style.display = "block";
-      document.getElementById("chatPage").style.display = "none";
-      document.getElementById("dissertationPage").style.display = "none";
-    }
-
-    function showChatPage() {
-      document.getElementById("searchPage").style.display = "none";
-      document.getElementById("chatPage").style.display = "block";
-      document.getElementById("dissertationPage").style.display = "none";
-    }
-
-    function showDissertationPage() {
-      document.getElementById("searchPage").style.display = "none";
-      document.getElementById("chatPage").style.display = "none";
-      document.getElementById("dissertationPage").style.display = "block";
+    function changerSection(section) {
+      document.getElementById("search").style.display = "none";
+      document.getElementById("chat").style.display = "none";
+      document.getElementById("dissertation").style.display = "none";
+      document.getElementById("therapie").style.display = "none";
+      
+      document.getElementById(section).style.display = "block";
     }
 
     function toggleDarkMode() {
@@ -320,42 +361,37 @@
       alert("Déconnexion réussie !");
     }
 
-    function genererDissertation() {
-      const subject = document.getElementById("essaySubject").value.trim();
-      if (!subject) return alert("Entrez un sujet de dissertation");
+    function genererTherapie() {
+      const sujet = document.getElementById("sujetTherapie").value.trim();
+      const output = document.getElementById("therapieResultat");
 
-      const url = `https://fr.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(subject)}`;
+      if (!sujet) return alert("Tape une idée ou une difficulté.");
 
-      fetch(url)
+      output.value = "Analyse en cours...";
+
+      fetch(`https://fr.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(sujet)}`)
         .then(res => res.json())
         .then(data => {
-          if (!data.extract) return alert("Aucune information trouvée pour ce sujet");
+          if (!data.extract) {
+            output.value = "Désolé, je n’ai trouvé aucune info sur ce sujet.";
+            return;
+          }
 
-          // Définir l'introduction
-          const introText = `Introduction : ${data.extract}`;
-          document.getElementById("introduction").textContent = introText;
+          const conseil = `
+Voici quelques éléments utiles sur "${sujet}" :
 
-          // Développement rédigé
-          const bodyText = `
-            Le sujet de cette dissertation est particulièrement vaste et soulève plusieurs aspects essentiels. En premier lieu, nous devons aborder les principaux éléments historiques et théoriques relatifs à ce sujet. Cela nous permettra de mieux comprendre les enjeux de ce domaine.
+${data.extract}
 
-            Dans un deuxième temps, il sera nécessaire d'examiner les implications pratiques de ce sujet. Une analyse approfondie des répercussions dans le monde moderne est essentielle pour bien cerner les enjeux actuels.
-
-            Enfin, pour conclure, il sera pertinent de traiter des perspectives d'avenir liées à ce sujet et de considérer ses impacts dans différents contextes. La compréhension de ces enjeux nous permettra de proposer des solutions concrètes adaptées aux défis futurs.
+N'oublie pas que parler à un adulte ou à un professionnel peut aussi t’aider si tu en ressens le besoin.
           `;
-          document.getElementById("body").innerHTML = bodyText;
 
-          // Conclusion
-          const conclusionText = `
-            En conclusion, ce sujet soulève des questions fondamentales qui dépassent le cadre académique. Sa compréhension et ses implications sont cruciales pour le développement de nombreuses disciplines, et il est essentiel d'étudier les différents aspects évoqués dans cette dissertation.
-          `;
-          document.getElementById("conclusion").textContent = conclusionText;
-
-          // Afficher la dissertation générée
-          document.getElementById("generatedEssay").style.display = "block";
+          output.value = conseil.trim();
         })
-        .catch(() => alert("Erreur lors de la génération de la dissertation"));
+        .catch(() => {
+          output.value = "Une erreur est survenue.";
+        });
     }
   </script>
+
 </body>
 </html>
