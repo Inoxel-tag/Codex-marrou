@@ -183,6 +183,12 @@
     button:hover {
       background-color: var(--hover);
     }
+
+    .username-display {
+      text-align: center;
+      margin: 10px 0;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -191,10 +197,12 @@
     <button onclick="showSearchPage()">🔍 Recherche</button>
     <button onclick="showChatPage()">💬 Discussion</button>
     <button onclick="toggleDarkMode()">🌙 Mode Sombre</button>
+    <button onclick="logout()">🚪 Déconnexion</button>
   </div>
 
-  <div id="searchPage" class="container">
+  <div class="container" id="searchPage">
     <h1>Le codex</h1>
+    <div class="username-display" id="usernameDisplay"></div>
     <div class="search-bar">
       <input type="text" id="searchInput" placeholder="Tape ta recherche ici...">
       <button onclick="effectuerRecherche()">Rechercher</button>
@@ -204,6 +212,7 @@
 
   <div id="chatPage" class="chat-container" style="display: none;">
     <h2>Discussion</h2>
+    <div class="username-display" id="usernameDisplayChat"></div>
     <div class="chat-box" id="chatBox">
       <p><strong>Bienvenue ! Pose ta question ou partage ton idée !</strong></p>
     </div>
@@ -212,7 +221,6 @@
   </div>
 
   <script>
-    // Navigation
     function showSearchPage() {
       document.getElementById("searchPage").style.display = "block";
       document.getElementById("chatPage").style.display = "none";
@@ -223,7 +231,6 @@
       document.getElementById("chatPage").style.display = "block";
     }
 
-    // Chat
     function envoyerMessage() {
       const input = document.getElementById("chatInput");
       const message = input.value.trim();
@@ -231,13 +238,13 @@
 
       const chatBox = document.getElementById("chatBox");
       const newMsg = document.createElement("p");
-      newMsg.textContent = `Utilisateur : ${message}`;
+      const username = localStorage.getItem("username") || "Utilisateur";
+      newMsg.textContent = `${username} : ${message}`;
       chatBox.appendChild(newMsg);
       chatBox.scrollTop = chatBox.scrollHeight;
       input.value = "";
     }
 
-    // Recherche
     function effectuerRecherche() {
       const query = document.getElementById("searchInput").value.trim();
       if (!query) return alert("Entrez un terme de recherche");
@@ -252,7 +259,6 @@
 
           if (data.extract) {
             results.innerHTML = `
-
               <table>
                 <tr><th>Titre</th><th>Description</th></tr>
                 <tr>
@@ -274,18 +280,32 @@
         });
     }
 
-    // Dark mode
     function toggleDarkMode() {
       document.body.classList.toggle("dark");
       localStorage.setItem("darkMode", document.body.classList.contains("dark"));
     }
 
-    // Charger préférence dark mode
+    function logout() {
+      localStorage.clear();
+      window.location.href = "index.html";
+    }
+
+    // Affichage du nom d'utilisateur
     window.onload = () => {
       if (localStorage.getItem("darkMode") === "true") {
         document.body.classList.add("dark");
       }
+
+      const username = localStorage.getItem("username");
+      if (!username) {
+        window.location.href = "index.html";
+        return;
+      }
+
+      document.getElementById("usernameDisplay").textContent = `Connecté en tant que : ${username}`;
+      document.getElementById("usernameDisplayChat").textContent = `Connecté en tant que : ${username}`;
     };
   </script>
+
 </body>
 </html>
