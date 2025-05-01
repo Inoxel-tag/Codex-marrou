@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Moteur de Recherche Stylé</title>
+  <title>Moteur de Recherche Stylé avec Discussion</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -17,6 +17,16 @@
     </div>
 
     <div class="results" id="results"></div>
+  </div>
+
+  <!-- Section de Chat -->
+  <div class="chat-container">
+    <h2>💬 Discussion</h2>
+    <div class="chat-box" id="chatBox">
+      <p><strong>Bienvenue dans la discussion ! Pose tes questions ou partage tes idées !</strong></p>
+    </div>
+    <textarea id="chatInput" placeholder="Tape ton message ici..." rows="3"></textarea>
+    <button onclick="envoyerMessage()">Envoyer</button>
   </div>
 
   <script>
@@ -33,19 +43,16 @@
           resultsDiv.innerHTML = "";
 
           if (data.extract) {
-            let weaknesses = ""; // Variable pour les faiblesses
-            let remedies = ""; // Variable pour les remèdes
+            let weaknesses = "";
+            let remedies = "";
 
-            // Vérifier si l'article concerne un monstre ou une maladie
             if (data.title.toLowerCase().includes("monstre")) {
-              // Si le titre indique un monstre, rechercher des faiblesses dans l'extrait
               if (data.extract.toLowerCase().includes("faiblesse")) {
                 weaknesses = `<p><strong>Faiblesses :</strong> ${data.extract.split("faiblesse")[1].split(".")[0]}</p>`;
               } else {
                 weaknesses = `<p><strong>Faiblesses :</strong> Aucune faiblesse spécifique mentionnée dans l'extrait.</p>`;
               }
             } else if (data.title.toLowerCase().includes("maladie")) {
-              // Si le titre indique une maladie, rechercher des remèdes dans l'extrait
               if (data.extract.toLowerCase().includes("remède")) {
                 remedies = `<p><strong>Remèdes :</strong> ${data.extract.split("remède")[1].split(".")[0]}</p>`;
               } else {
@@ -76,7 +83,132 @@
           alert("Erreur lors de la recherche.");
         });
     }
+
+    // Fonction pour envoyer un message dans la discussion
+    function envoyerMessage() {
+      const message = document.getElementById("chatInput").value.trim();
+      if (!message) return;
+
+      const chatBox = document.getElementById("chatBox");
+      const newMessage = document.createElement("p");
+      newMessage.textContent = `Utilisateur: ${message}`;
+      chatBox.appendChild(newMessage);
+      chatBox.scrollTop = chatBox.scrollHeight;  // Descendre vers le bas de la boîte de chat
+      document.getElementById("chatInput").value = "";  // Réinitialiser le champ de texte
+    }
   </script>
+
+  <style>
+    /* Styles de base */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f7fa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+    }
+
+    /* Conteneur principal */
+    .container {
+      background-color: #fff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      padding: 20px;
+      width: 80%;
+      max-width: 800px;
+      margin-top: 20px;
+    }
+
+    /* Barre de recherche */
+    .search-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      background-color: #f5f5f5;
+      border-radius: 50px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-bar input {
+      width: 75%;
+      padding: 10px;
+      border: none;
+      border-radius: 50px;
+      font-size: 1rem;
+      outline: none;
+      background-color: #fff;
+    }
+
+    .search-bar button {
+      padding: 10px 15px;
+      border: none;
+      background-color: #4CAF50;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 50px;
+      transition: background-color 0.3s ease;
+    }
+
+    .search-bar button:hover {
+      background-color: #45a049;
+    }
+
+    /* Boîte de chat */
+    .chat-container {
+      width: 80%;
+      max-width: 800px;
+      background-color: #fff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    .chat-box {
+      max-height: 300px;
+      overflow-y: auto;
+      background-color: #f9f9f9;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+    }
+
+    .chat-box p {
+      margin-bottom: 10px;
+    }
+
+    .chat-box p strong {
+      color: #333;
+    }
+
+    /* Champ de texte et bouton */
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      resize: none;
+    }
+
+    button {
+      padding: 10px 15px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
 
 </body>
 </html>
