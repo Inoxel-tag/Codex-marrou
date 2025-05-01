@@ -24,6 +24,7 @@
       const query = document.getElementById('searchInput').value.trim();
       if (!query) return alert("Entre une recherche !");
 
+      // Effectuer la recherche sur Wikipédia, spécifiquement pour les maladies
       const url = `https://fr.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`;
 
       fetch(url)
