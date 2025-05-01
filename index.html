@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Moteur de Recherche Stylé</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Moteur de recherche stylé</title>
+  <link rel="stylesheet" href="style.css" />
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f4f4f9;
       margin: 0;
       padding: 0;
+      background-color: #f4f4f4;
     }
 
     .container {
-      padding: 20px;
       max-width: 900px;
       margin: auto;
+      padding: 20px;
     }
 
     .tabs {
@@ -28,7 +28,7 @@
       padding: 10px 20px;
       cursor: pointer;
       background-color: #ddd;
-      border-radius: 8px 8px 0 0;
+      border-radius: 5px 5px 0 0;
       margin-right: 5px;
     }
 
@@ -63,21 +63,6 @@
       border: 1px solid #ccc;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    th, td {
-      padding: 10px;
-      border-bottom: 1px solid #ccc;
-    }
-
-    th {
-      background-color: #f0f0f0;
-    }
-
-    /* From Uiverse.io by adamgiebl */
     button {
       font-family: inherit;
       font-size: 20px;
@@ -126,9 +111,25 @@
       from {
         transform: translateY(0.1em);
       }
+
       to {
         transform: translateY(-0.1em);
       }
+    }
+
+    .results {
+      margin-top: 20px;
+    }
+
+    .results table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .results th,
+    .results td {
+      padding: 10px;
+      border: 1px solid #ccc;
     }
 
     .message-area {
@@ -144,23 +145,21 @@
   </style>
 </head>
 <body>
-
   <div class="container">
-    <h1>🔍 Moteur de Recherche Stylé</h1>
+    <h1>🔍 Moteur de recherche stylé</h1>
 
     <div class="tabs">
       <div class="tab active" onclick="switchTab('recherche')">Recherche</div>
       <div class="tab" onclick="switchTab('discussion')">Discussion</div>
     </div>
 
-    <!-- RECHERCHE -->
     <div id="recherche" class="tab-content active">
       <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Tape ta recherche ici...">
+        <input type="text" id="searchInput" placeholder="Tape ta recherche ici..." />
         <button onclick="effectuerRecherche()">
           <div class="svg-wrapper">
             <svg height="24" width="24" viewBox="0 0 24 24">
-              <path fill="white" d="M2 21l21-9L2 3v7l15 2-15 2z"/>
+              <path fill="white" d="M2 21l21-9L2 3v7l15 2-15 2z" />
             </svg>
           </div>
           <span>Rechercher</span>
@@ -169,14 +168,13 @@
       <div class="results" id="results"></div>
     </div>
 
-    <!-- DISCUSSION -->
     <div id="discussion" class="tab-content">
       <div class="search-bar">
         <input type="text" id="messageInput" placeholder="Écris ton message...">
         <button onclick="envoyerMessage()">
           <div class="svg-wrapper">
             <svg height="24" width="24" viewBox="0 0 24 24">
-              <path fill="white" d="M2 21l21-9L2 3v7l15 2-15 2z"/>
+              <path fill="white" d="M2 21l21-9L2 3v7l15 2-15 2z" />
             </svg>
           </div>
           <span>Envoyer</span>
@@ -243,6 +241,5 @@
       messageInput.value = "";
     }
   </script>
-
 </body>
 </html>
