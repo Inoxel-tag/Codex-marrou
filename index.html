@@ -4,63 +4,65 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Moteur de Recherche Stylé avec Discussion</title>
-  <link rel="stylesheet" href="style.css">
   <style>
+    /* Réinitialisation */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(135deg, #e3f2fd, #f1f8e9);
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       min-height: 100vh;
+      padding: 0;
     }
 
+    /* Navbar fixée en haut */
     .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
-      background-color: #00796b;
+      background-color: #4CAF50;
       padding: 10px;
       display: flex;
       justify-content: center;
       gap: 10px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
 
     .navbar button {
       background-color: #ffffff;
+      color: #333;
       border: none;
       padding: 10px 20px;
-      border-radius: 5px;
+      border-radius: 25px;
       cursor: pointer;
       font-size: 1rem;
-      font-weight: bold;
-      color: #00796b;
+      transition: 0.3s;
     }
 
     .navbar button:hover {
-      background-color: #004d40;
-      color: #ffffff;
+      background-color: #c8e6c9;
     }
 
     .container, .chat-container {
       background-color: #ffffff;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       border-radius: 12px;
-      padding: 25px;
+      padding: 20px;
       width: 90%;
-      max-width: 850px;
-      margin-top: 25px;
+      max-width: 800px;
+      margin: 90px auto 20px auto;
     }
 
-    h1, h2 {
-      color: #00695c;
-      background: linear-gradient(to right, #a7ffeb, #e0f7fa);
-      padding: 10px 20px;
-      border-radius: 12px;
+    .container h1, .chat-container h2 {
       text-align: center;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      color: #2e7d32;
     }
 
     .search-bar {
@@ -68,9 +70,9 @@
       justify-content: space-between;
       align-items: center;
       padding: 10px;
-      background-color: #f1f8e9;
+      background-color: #f5f5f5;
       border-radius: 50px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
     .search-bar input {
@@ -80,14 +82,14 @@
       border-radius: 50px;
       font-size: 1rem;
       outline: none;
-      background-color: #fff;
+      background-color: #ffffff;
     }
 
     .search-bar button {
-      padding: 10px 20px;
+      padding: 10px 15px;
       border: none;
-      background-color: #26a69a;
-      color: #fff;
+      background-color: #4CAF50;
+      color: #ffffff;
       font-size: 1rem;
       cursor: pointer;
       border-radius: 50px;
@@ -95,17 +97,37 @@
     }
 
     .search-bar button:hover {
-      background-color: #00897b;
+      background-color: #388e3c;
     }
 
+    .results table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    .results table th,
+    .results table td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .results img {
+      margin-top: 10px;
+      border-radius: 8px;
+      max-width: 100px;
+    }
+
+    /* Chat */
     .chat-box {
       max-height: 300px;
       overflow-y: auto;
-      background-color: #f9fbe7;
+      background-color: #f9f9f9;
       padding: 10px;
       border-radius: 10px;
       margin-bottom: 10px;
-      border: 1px solid #cfd8dc;
+      border: 1px solid #ddd;
     }
 
     .chat-box p {
@@ -116,14 +138,14 @@
       width: 100%;
       padding: 10px;
       border-radius: 10px;
-      border: 1px solid #ccc;
+      border: 1px solid #ddd;
       resize: none;
+      margin-bottom: 10px;
     }
 
     button {
-      margin-top: 10px;
       padding: 10px 15px;
-      background-color: #4db6ac;
+      background-color: #4CAF50;
       color: #fff;
       border: none;
       border-radius: 10px;
@@ -132,27 +154,7 @@
     }
 
     button:hover {
-      background-color: #00897b;
-    }
-
-    table {
-      width: 100%;
-      margin-top: 20px;
-      border-collapse: collapse;
-    }
-
-    table th, table td {
-      border: 1px solid #ccc;
-      padding: 10px;
-      text-align: left;
-    }
-
-    table th {
-      background-color: #e0f2f1;
-    }
-
-    img {
-      border-radius: 8px;
+      background-color: #388e3c;
     }
   </style>
 </head>
@@ -164,17 +166,19 @@
     <button onclick="showChatPage()">Discussion</button>
   </div>
 
-  <!-- Page Recherche -->
+  <!-- Page de Recherche -->
   <div id="searchPage" class="container">
     <h1>🔍 Moteur de Recherche Stylé</h1>
+
     <div class="search-bar">
       <input type="text" id="searchInput" placeholder="Tape ta recherche ici...">
       <button onclick="effectuerRecherche()">Rechercher</button>
     </div>
+
     <div class="results" id="results"></div>
   </div>
 
-  <!-- Page Discussion -->
+  <!-- Page de Discussion -->
   <div id="chatPage" class="chat-container" style="display: none;">
     <h2>💬 Discussion</h2>
     <div class="chat-box" id="chatBox">
@@ -185,6 +189,7 @@
   </div>
 
   <script>
+    // Recherche Wikipedia
     function effectuerRecherche() {
       const query = document.getElementById('searchInput').value.trim();
       if (!query) return alert("Entre une recherche !");
@@ -205,13 +210,13 @@
               if (data.extract.toLowerCase().includes("faiblesse")) {
                 weaknesses = `<p><strong>Faiblesses :</strong> ${data.extract.split("faiblesse")[1].split(".")[0]}</p>`;
               } else {
-                weaknesses = `<p><strong>Faiblesses :</strong> Aucune faiblesse spécifique mentionnée.</p>`;
+                weaknesses = `<p><strong>Faiblesses :</strong> Aucune faiblesse spécifique mentionnée dans l'extrait.</p>`;
               }
             } else if (data.title.toLowerCase().includes("maladie")) {
               if (data.extract.toLowerCase().includes("remède")) {
                 remedies = `<p><strong>Remèdes :</strong> ${data.extract.split("remède")[1].split(".")[0]}</p>`;
               } else {
-                remedies = `<p><strong>Remèdes :</strong> Aucun remède spécifique mentionné.</p>`;
+                remedies = `<p><strong>Remèdes :</strong> Aucun remède spécifique mentionné dans l'extrait.</p>`;
               }
             }
 
@@ -221,7 +226,7 @@
                 <tr>
                   <td>
                     <a href="${data.content_urls.desktop.page}" target="_blank">${data.title}</a>
-                    ${data.thumbnail ? `<br><img src="${data.thumbnail.source}" alt="${data.title}" style="max-width:150px; margin-top:10px;">` : ''}
+                    ${data.thumbnail ? `<br><img src="${data.thumbnail.source}" alt="${data.title}">` : ''}
                   </td>
                   <td>${data.extract}</td>
                 </tr>
@@ -239,18 +244,20 @@
         });
     }
 
+    // Discussion
     function envoyerMessage() {
       const message = document.getElementById("chatInput").value.trim();
       if (!message) return;
 
       const chatBox = document.getElementById("chatBox");
       const newMessage = document.createElement("p");
-      newMessage.textContent = `Utilisateur: ${message}`;
+      newMessage.textContent = `Utilisateur : ${message}`;
       chatBox.appendChild(newMessage);
       chatBox.scrollTop = chatBox.scrollHeight;
       document.getElementById("chatInput").value = "";
     }
 
+    // Navigation
     function showSearchPage() {
       document.getElementById("searchPage").style.display = "block";
       document.getElementById("chatPage").style.display = "none";
