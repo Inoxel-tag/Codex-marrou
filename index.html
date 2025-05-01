@@ -8,7 +8,14 @@
 </head>
 <body>
 
-  <div class="container">
+  <!-- Menu de Navigation -->
+  <div class="navbar">
+    <button onclick="showSearchPage()">Moteur de Recherche</button>
+    <button onclick="showChatPage()">Discussion</button>
+  </div>
+
+  <!-- Contenu de la page -->
+  <div id="searchPage" class="container">
     <h1>🔍 Moteur de Recherche Stylé</h1>
 
     <div class="search-bar">
@@ -19,8 +26,8 @@
     <div class="results" id="results"></div>
   </div>
 
-  <!-- Section de Chat -->
-  <div class="chat-container">
+  <!-- Page de Discussion -->
+  <div id="chatPage" class="chat-container" style="display: none;">
     <h2>💬 Discussion</h2>
     <div class="chat-box" id="chatBox">
       <p><strong>Bienvenue dans la discussion ! Pose tes questions ou partage tes idées !</strong></p>
@@ -30,6 +37,7 @@
   </div>
 
   <script>
+    // Fonction de recherche
     function effectuerRecherche() {
       const query = document.getElementById('searchInput').value.trim();
       if (!query) return alert("Entre une recherche !");
@@ -96,6 +104,18 @@
       chatBox.scrollTop = chatBox.scrollHeight;  // Descendre vers le bas de la boîte de chat
       document.getElementById("chatInput").value = "";  // Réinitialiser le champ de texte
     }
+
+    // Afficher la page de recherche
+    function showSearchPage() {
+      document.getElementById("searchPage").style.display = "block";
+      document.getElementById("chatPage").style.display = "none";
+    }
+
+    // Afficher la page de discussion
+    function showChatPage() {
+      document.getElementById("searchPage").style.display = "none";
+      document.getElementById("chatPage").style.display = "block";
+    }
   </script>
 
   <style>
@@ -108,6 +128,29 @@
       align-items: center;
       justify-content: flex-start;
       min-height: 100vh;
+    }
+
+    /* Barre de navigation */
+    .navbar {
+      width: 100%;
+      background-color: #4CAF50;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .navbar button {
+      background-color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .navbar button:hover {
+      background-color: #45a049;
     }
 
     /* Conteneur principal */
