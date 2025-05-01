@@ -289,7 +289,7 @@
     <h1>Le codex</h1>
     <div class="username-display" id="usernameDisplay"></div>
     <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Tape ta recherche ici...">
+      <input type="text" id="searchInput" placeholder="Tape ta recherche ici..." onkeypress="handleSearchKeyPress(event)">
       <button onclick="effectuerRecherche()">Rechercher</button>
     </div>
     <div class="results" id="results"></div>
@@ -423,13 +423,34 @@
       const query = document.getElementById("searchInput").value.trim();
       if (!query) return alert("Veuillez entrer un terme de recherche.");
       
-      // Simuler une recherche de résultats
-      document.getElementById("results").innerHTML = `
-        <table>
-          <thead><tr><th>Résultats pour : "${query}"</th></tr></thead>
-          <tbody><tr><td>Aucun résultat trouvé...</td></tr></tbody>
-        </table>
-      `;
+      // Simuler une recherche avec des résultats plus réalistes
+      const results = [
+        { title: `Résultat 1 pour "${query}"`, content: "Ceci est le premier résultat de votre recherche." },
+        { title: `Résultat 2 pour "${query}"`, content: "Un autre résultat intéressant lié à votre recherche." },
+        { title: `Information sur "${query}"`, content: "Détails supplémentaires sur le sujet recherché." }
+      ];
+      
+      let html = `<table>
+        <thead><tr><th>Résultats pour : "${query}"</th></tr></thead>
+        <tbody>`;
+      
+      results.forEach(result => {
+        html += `<tr>
+          <td>
+            <strong>${result.title}</strong><br>
+            ${result.content}
+          </td>
+        </tr>`;
+      });
+      
+      html += `</tbody></table>`;
+      document.getElementById("results").innerHTML = html;
+    }
+
+    function handleSearchKeyPress(event) {
+      if (event.key === 'Enter') {
+        effectuerRecherche();
+      }
     }
 
     // Fonction pour afficher le nom de l'utilisateur
