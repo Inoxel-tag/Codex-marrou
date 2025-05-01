@@ -2,33 +2,27 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Connexion - Moteur de Recherche</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connexion - Moteur de Recherche Stylé</title>
   <style>
+    /* Styles basiques pour la page de connexion */
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f4;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
-      flex-direction: column;
     }
-
     .login-container {
-      background-color: #ffffff;
-      padding: 30px;
-      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      background-color: white;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       border-radius: 8px;
       width: 300px;
-    }
-
-    h1 {
       text-align: center;
-      color: #4CAF50;
     }
-
     input {
       width: 100%;
       padding: 10px;
@@ -36,96 +30,50 @@
       border-radius: 5px;
       border: 1px solid #ccc;
     }
-
     button {
       width: 100%;
       padding: 10px;
       background-color: #4CAF50;
-      color: white;
       border: none;
+      color: white;
+      font-size: 16px;
       border-radius: 5px;
       cursor: pointer;
     }
-
     button:hover {
       background-color: #45a049;
-    }
-
-    .toggle-links {
-      text-align: center;
-    }
-
-    .error-message {
-      color: red;
-      display: none;
     }
   </style>
 </head>
 <body>
 
   <div class="login-container">
-    <h1>Se connecter</h1>
-    <input type="text" id="username" placeholder="Nom d'utilisateur" />
-    <input type="password" id="password" placeholder="Mot de passe" />
-    <button onclick="login()">Se connecter</button>
-
-    <p class="error-message" id="loginError">Nom d'utilisateur ou mot de passe incorrect</p>
-
-    <div class="toggle-links">
-      <p>Pas encore de compte ? <a href="#" onclick="toggleForm()">S'inscrire</a></p>
-    </div>
+    <h2>Connexion</h2>
+    <form id="loginForm" onsubmit="handleLogin(event)">
+      <input type="text" id="username" placeholder="Nom d'utilisateur" required />
+      <input type="password" id="password" placeholder="Mot de passe" required />
+      <button type="submit">Se connecter</button>
+    </form>
   </div>
 
   <script>
-    // Fonction pour la connexion
-    function login() {
-      const username = document.getElementById("username").value.trim();
-      const password = document.getElementById("password").value.trim();
+    // Fonction de gestion de la connexion
+    function handleLogin(event) {
+      event.preventDefault();
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
 
-      if (!username || !password) {
-        alert("Veuillez entrer un nom d'utilisateur et un mot de passe.");
-        return;
-      }
-
-      // Simuler la vérification de la connexion
-      const user = localStorage.getItem("username");
-      if (user && username === user) {
-        localStorage.setItem("username", username);
-        window.location.href = "dashboard.html";  // Rediriger vers dashboard après connexion
+      if (username === "user" && password === "password") {
+        localStorage.setItem("isLoggedIn", "true");
+        window.location.href = "dashboard.html"; // Redirige vers le tableau de bord après connexion
       } else {
-        document.getElementById("loginError").style.display = "block";
+        alert("Identifiants incorrects !");
       }
     }
 
-    // Fonction pour l'inscription
-    function signup() {
-      const username = document.getElementById("username").value.trim();
-      const password = document.getElementById("password").value.trim();
-
-      if (!username || !password) {
-        alert("Veuillez entrer un nom d'utilisateur et un mot de passe.");
-        return;
-      }
-
-      // Simuler l'ajout d'un nouvel utilisateur
-      localStorage.setItem("username", username);
-      localStorage.setItem("password", password);
-      alert("Inscription réussie ! Vous pouvez maintenant vous connecter.");
-      toggleForm();  // Revenir à la page de connexion après inscription
-    }
-
-    // Permet de basculer entre les formulaires de connexion et d'inscription
-    function toggleForm() {
-      const formContainer = document.querySelector(".login-container");
-      if (formContainer.querySelector("button").innerText === "Se connecter") {
-        formContainer.querySelector("button").innerText = "S'inscrire";
-        formContainer.querySelector("p").innerHTML = 'Vous avez déjà un compte ? <a href="#" onclick="toggleForm()">Se connecter</a>';
-        formContainer.querySelector("button").setAttribute('onclick', 'signup()');
-      } else {
-        formContainer.querySelector("button").innerText = "Se connecter";
-        formContainer.querySelector("p").innerHTML = 'Pas encore de compte ? <a href="#" onclick="toggleForm()">S\'inscrire</a>';
-        formContainer.querySelector("button").setAttribute('onclick', 'login()');
-      }
+    // Vérifier si l'utilisateur est déjà connecté
+    if (localStorage.getItem("isLoggedIn") === "true") {
+      window.location.href = "dashboard.html";
     }
   </script>
 
