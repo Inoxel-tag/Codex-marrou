@@ -1,11 +1,28 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Moteur de Recherche Stylé avec Discussion</title>
   <style>
-    /* Réinitialisation */
+    :root {
+      --bg: #e3f2fd;
+      --bg-alt: #ffffff;
+      --text: #333;
+      --accent: #4CAF50;
+      --hover: #388e3c;
+      --box: #f5f5f5;
+    }
+
+    body.dark {
+      --bg: #121212;
+      --bg-alt: #1e1e1e;
+      --text: #f5f5f5;
+      --accent: #81c784;
+      --hover: #66bb6a;
+      --box: #2e2e2e;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -14,18 +31,17 @@
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #e3f2fd, #f1f8e9);
+      background-color: var(--bg);
+      color: var(--text);
       min-height: 100vh;
-      padding: 0;
     }
 
-    /* Navbar fixée en haut */
     .navbar {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      background-color: #4CAF50;
+      background-color: var(--accent);
       padding: 10px;
       display: flex;
       justify-content: center;
@@ -49,8 +65,13 @@
       background-color: #c8e6c9;
     }
 
+    body.dark .navbar button {
+      background-color: #333;
+      color: #fff;
+    }
+
     .container, .chat-container {
-      background-color: #ffffff;
+      background-color: var(--bg-alt);
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       border-radius: 12px;
       padding: 20px;
@@ -62,7 +83,7 @@
     .container h1, .chat-container h2 {
       text-align: center;
       margin-bottom: 20px;
-      color: #2e7d32;
+      color: var(--accent);
     }
 
     .search-bar {
@@ -70,7 +91,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 10px;
-      background-color: #f5f5f5;
+      background-color: var(--box);
       border-radius: 50px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
@@ -82,13 +103,18 @@
       border-radius: 50px;
       font-size: 1rem;
       outline: none;
-      background-color: #ffffff;
+      background-color: #fff;
+    }
+
+    body.dark .search-bar input {
+      background-color: #444;
+      color: #fff;
     }
 
     .search-bar button {
       padding: 10px 15px;
       border: none;
-      background-color: #4CAF50;
+      background-color: var(--accent);
       color: #ffffff;
       font-size: 1rem;
       cursor: pointer;
@@ -97,7 +123,7 @@
     }
 
     .search-bar button:hover {
-      background-color: #388e3c;
+      background-color: var(--hover);
     }
 
     .results table {
@@ -119,11 +145,10 @@
       max-width: 100px;
     }
 
-    /* Chat */
     .chat-box {
       max-height: 300px;
       overflow-y: auto;
-      background-color: #f9f9f9;
+      background-color: var(--box);
       padding: 10px;
       border-radius: 10px;
       margin-bottom: 10px;
@@ -141,11 +166,13 @@
       border: 1px solid #ddd;
       resize: none;
       margin-bottom: 10px;
+      background-color: var(--box);
+      color: var(--text);
     }
 
     button {
       padding: 10px 15px;
-      background-color: #4CAF50;
+      background-color: var(--accent);
       color: #fff;
       border: none;
       border-radius: 10px;
@@ -154,109 +181,37 @@
     }
 
     button:hover {
-      background-color: #388e3c;
+      background-color: var(--hover);
     }
   </style>
 </head>
 <body>
 
-  <!-- Navigation -->
   <div class="navbar">
-    <button onclick="showSearchPage()">Moteur de Recherche</button>
-    <button onclick="showChatPage()">Discussion</button>
+    <button onclick="showSearchPage()">🔍 Recherche</button>
+    <button onclick="showChatPage()">💬 Discussion</button>
+    <button onclick="toggleDarkMode()">🌙 Mode Sombre</button>
   </div>
 
-  <!-- Page de Recherche -->
   <div id="searchPage" class="container">
-    <h1>🔍 Moteur de Recherche Stylé</h1>
-
+    <h1>Moteur de Recherche Stylé</h1>
     <div class="search-bar">
       <input type="text" id="searchInput" placeholder="Tape ta recherche ici...">
       <button onclick="effectuerRecherche()">Rechercher</button>
     </div>
-
     <div class="results" id="results"></div>
   </div>
 
-  <!-- Page de Discussion -->
   <div id="chatPage" class="chat-container" style="display: none;">
-    <h2>💬 Discussion</h2>
+    <h2>Discussion</h2>
     <div class="chat-box" id="chatBox">
-      <p><strong>Bienvenue dans la discussion ! Pose tes questions ou partage tes idées !</strong></p>
+      <p><strong>Bienvenue ! Pose ta question ou partage ton idée !</strong></p>
     </div>
-    <textarea id="chatInput" placeholder="Tape ton message ici..." rows="3"></textarea>
+    <textarea id="chatInput" placeholder="Ton message..." rows="3"></textarea>
     <button onclick="envoyerMessage()">Envoyer</button>
   </div>
 
   <script>
-    // Recherche Wikipedia
-    function effectuerRecherche() {
-      const query = document.getElementById('searchInput').value.trim();
-      if (!query) return alert("Entre une recherche !");
-
-      const url = `https://fr.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`;
-
-      fetch(url)
-        .then(res => res.json())
-        .then(data => {
-          const resultsDiv = document.getElementById("results");
-          resultsDiv.innerHTML = "";
-
-          if (data.extract) {
-            let weaknesses = "";
-            let remedies = "";
-
-            if (data.title.toLowerCase().includes("monstre")) {
-              if (data.extract.toLowerCase().includes("faiblesse")) {
-                weaknesses = `<p><strong>Faiblesses :</strong> ${data.extract.split("faiblesse")[1].split(".")[0]}</p>`;
-              } else {
-                weaknesses = `<p><strong>Faiblesses :</strong> Aucune faiblesse spécifique mentionnée dans l'extrait.</p>`;
-              }
-            } else if (data.title.toLowerCase().includes("maladie")) {
-              if (data.extract.toLowerCase().includes("remède")) {
-                remedies = `<p><strong>Remèdes :</strong> ${data.extract.split("remède")[1].split(".")[0]}</p>`;
-              } else {
-                remedies = `<p><strong>Remèdes :</strong> Aucun remède spécifique mentionné dans l'extrait.</p>`;
-              }
-            }
-
-            resultsDiv.innerHTML = `
-              <table>
-                <tr><th>Titre</th><th>Description</th></tr>
-                <tr>
-                  <td>
-                    <a href="${data.content_urls.desktop.page}" target="_blank">${data.title}</a>
-                    ${data.thumbnail ? `<br><img src="${data.thumbnail.source}" alt="${data.title}">` : ''}
-                  </td>
-                  <td>${data.extract}</td>
-                </tr>
-              </table>
-              ${weaknesses} 
-              ${remedies}
-            `;
-          } else {
-            resultsDiv.innerHTML = "<p>Aucun résultat trouvé sur Wikipédia.</p>";
-          }
-        })
-        .catch(err => {
-          console.error(err);
-          alert("Erreur lors de la recherche.");
-        });
-    }
-
-    // Discussion
-    function envoyerMessage() {
-      const message = document.getElementById("chatInput").value.trim();
-      if (!message) return;
-
-      const chatBox = document.getElementById("chatBox");
-      const newMessage = document.createElement("p");
-      newMessage.textContent = `Utilisateur : ${message}`;
-      chatBox.appendChild(newMessage);
-      chatBox.scrollTop = chatBox.scrollHeight;
-      document.getElementById("chatInput").value = "";
-    }
-
     // Navigation
     function showSearchPage() {
       document.getElementById("searchPage").style.display = "block";
@@ -267,7 +222,69 @@
       document.getElementById("searchPage").style.display = "none";
       document.getElementById("chatPage").style.display = "block";
     }
-  </script>
 
+    // Chat
+    function envoyerMessage() {
+      const input = document.getElementById("chatInput");
+      const message = input.value.trim();
+      if (!message) return;
+
+      const chatBox = document.getElementById("chatBox");
+      const newMsg = document.createElement("p");
+      newMsg.textContent = `Utilisateur : ${message}`;
+      chatBox.appendChild(newMsg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+      input.value = "";
+    }
+
+    // Recherche
+    function effectuerRecherche() {
+      const query = document.getElementById("searchInput").value.trim();
+      if (!query) return alert("Entrez un terme de recherche");
+
+      const url = `https://fr.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`;
+
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          const results = document.getElementById("results");
+          results.innerHTML = "";
+
+          if (data.extract) {
+            results.innerHTML = `
+              <table>
+                <tr><th>Titre</th><th>Description</th></tr>
+                <tr>
+                  <td>
+                    <a href="${data.content_urls.desktop.page}" target="_blank">${data.title}</a>
+                    ${data.thumbnail ? `<br><img src="${data.thumbnail.source}" alt="${data.title}">` : ""}
+                  </td>
+                  <td>${data.extract}</td>
+                </tr>
+              </table>
+            `;
+          } else {
+            results.innerHTML = "<p>Aucun résultat trouvé.</p>";
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          alert("Erreur lors de la recherche");
+        });
+    }
+
+    // Dark mode
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+      localStorage.setItem("darkMode", document.body.classList.contains("dark"));
+    }
+
+    // Charger préférence dark mode
+    window.onload = () => {
+      if (localStorage.getItem("darkMode") === "true") {
+        document.body.classList.add("dark");
+      }
+    };
+  </script>
 </body>
 </html>
