@@ -6,33 +6,46 @@
   <title>Tableau de Bord</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Arial', sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #f4f4f4;
+      background: #f9f9f9;
     }
 
     .dashboard-container {
-      text-align: center;
-      padding: 50px;
       background-color: white;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      margin: 50px auto;
-      width: 50%;
+      padding: 50px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      width: 80%;
+      max-width: 600px;
+      margin: 100px auto;
+      text-align: center;
+    }
+
+    .dashboard-container h2 {
+      color: #333;
+      font-size: 28px;
+      margin-bottom: 20px;
     }
 
     button {
-      padding: 10px;
-      background-color: #f44336;
+      padding: 15px 30px;
+      background-color: #ff7e5f;
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
+      font-size: 16px;
       cursor: pointer;
+      transition: background-color 0.3s;
     }
 
     button:hover {
-      background-color: #e53935;
+      background-color: #feb47b;
+    }
+
+    .logout-button {
+      margin-top: 30px;
     }
   </style>
 </head>
@@ -40,20 +53,18 @@
 
   <div class="dashboard-container">
     <h2>Bienvenue sur votre tableau de bord</h2>
-    <p>Vous êtes connecté.</p>
-    <button onclick="logout()">Se déconnecter</button>
+    <p>Vous êtes connecté avec succès.</p>
+    <button class="logout-button" onclick="logout()">Se déconnecter</button>
   </div>
 
   <script>
-    // Vérifie si l'utilisateur est connecté
     if (!localStorage.getItem("isLoggedIn")) {
-      window.location.href = "index.html";  // Redirection vers la page de connexion si non connecté
+      window.location.href = "index.html";
     }
 
-    // Fonction de déconnexion
     function logout() {
       localStorage.removeItem("isLoggedIn");
-      window.location.href = "index.html";  // Redirection vers la page de connexion
+      window.location.href = "index.html";
     }
   </script>
 
