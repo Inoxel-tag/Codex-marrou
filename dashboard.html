@@ -189,6 +189,73 @@
       margin: 10px 0;
       font-weight: bold;
     }
+
+    /* Dissertation Section */
+    #dissertationPage {
+      background-color: var(--bg-alt);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      border-radius: 12px;
+      margin: 90px auto 20px auto;
+      max-width: 900px;
+      text-align: center;
+    }
+
+    #dissertationPage h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: var(--accent);
+    }
+
+    .input-container {
+      margin-bottom: 20px;
+    }
+
+    #essaySubject {
+      padding: 10px;
+      width: 80%;
+      max-width: 500px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+    }
+
+    button {
+      padding: 10px 15px;
+      background-color: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: var(--hover);
+    }
+
+    #essayOutput {
+      width: 100%;
+      height: 300px;
+      padding: 20px;
+      font-size: 1rem;
+      background-color: #f9f9f9;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      color: #333;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      line-height: 1.6;
+      resize: none;
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    #essayOutput::placeholder {
+      color: #888;
+      font-style: italic;
+    }
   </style>
 </head>
 <body>
@@ -196,7 +263,7 @@
   <div class="navbar">
     <button onclick="showSearchPage()">🔍 Recherche</button>
     <button onclick="showChatPage()">💬 Discussion</button>
-    <button onclick="showDissertationPage()">📄 Dissertation</button> <!-- Ajout du bouton pour la dissertation -->
+    <button onclick="showDissertationPage()">📝 Dissertation</button>
     <button onclick="toggleDarkMode()">🌙 Mode Sombre</button>
     <button onclick="logout()">🚪 Déconnexion</button>
   </div>
@@ -223,8 +290,11 @@
 
   <div id="dissertationPage" class="container" style="display: none;">
     <h1>Rédiger une dissertation</h1>
-    <input type="text" id="essaySubject" placeholder="Entrez le sujet de la dissertation...">
-    <button onclick="genererDissertation()">Générer la dissertation</button>
+    <div class="input-container">
+      <input type="text" id="essaySubject" placeholder="Entrez le sujet de la dissertation...">
+      <button onclick="genererDissertation()">Générer la dissertation</button>
+    </div>
+
     <textarea id="essayOutput" rows="10" placeholder="La dissertation générée apparaîtra ici..." readonly></textarea>
   </div>
 
@@ -296,49 +366,6 @@
         });
     }
 
-    function genererDissertation() {
-      const sujet = document.getElementById("essaySubject").value.trim();
-      const output = document.getElementById("essayOutput");
-      if (!sujet) return alert("Entre un sujet");
-
-      const url = `https://fr.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(sujet)}`;
-
-      fetch(url)
-        .then(res => res.json())
-        .then(data => {
-          if (!data.extract) {
-            output.value = "Aucun contenu trouvé sur Wikipédia pour ce sujet.";
-            return;
-          }
-
-          const contenu = data.extract;
-
-          output.value = `Sujet : ${sujet}
-
-Introduction :
-Le sujet "${sujet}" soulève une problématique importante dans notre société contemporaine. Afin de mieux comprendre ses enjeux, il est essentiel d'en analyser les origines, les implications et les perspectives. Pour cela, nous nous appuierons notamment sur les informations issues de Wikipédia.
-
-Développement :
-1. Contexte et définitions :
-${contenu}
-
-2. Analyse critique :
-Ce sujet nous permet d’aborder des questions fondamentales liées à l'histoire, à la société ou encore à la science. Il est important de le situer dans son contexte global afin de mieux en comprendre les répercussions.
-
-3. Enjeux actuels :
-Aujourd’hui, "${sujet}" demeure un sujet de réflexion et de débat. Qu’il s’agisse de ses applications concrètes ou de ses implications théoriques, il continue d’interroger chercheurs, politiques et citoyens.
-
-Conclusion :
-En résumé, "${sujet}" constitue un thème à la fois complexe et passionnant. Grâce à notre exploration, notamment à travers les données disponibles sur Wikipédia, nous avons pu en dégager les principaux axes de réflexion.`;
-
-          output.scrollTop = 0;
-        })
-        .catch(error => {
-          console.error(error);
-          output.value = "Erreur lors de la récupération de l'article Wikipédia.";
-        });
-    }
-
     function toggleDarkMode() {
       document.body.classList.toggle("dark");
       localStorage.setItem("darkMode", document.body.classList.contains("dark"));
@@ -349,7 +376,16 @@ En résumé, "${sujet}" constitue un thème à la fois complexe et passionnant. 
       window.location.href = "index.html";
     }
 
-    // Affichage du nom d'utilisateur
+    function genererDissertation() {
+      const subject = document.getElementById("essaySubject").value.trim();
+      if (!subject) return alert("Entrez un sujet de dissertation");
+
+      // Générer la dissertation basée sur le sujet (remplacer cette ligne par l'intégration avec une API ou un générateur)
+      const dissertationText = `Voici une dissertation générée pour le sujet "${subject}". Vous pouvez ajouter du texte ici.`;
+      
+      document.getElementById("essayOutput").value = dissertationText;
+    }
+
     window.onload = () => {
       if (localStorage.getItem("darkMode") === "true") {
         document.body.classList.add("dark");
