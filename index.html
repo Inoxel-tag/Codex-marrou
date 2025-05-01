@@ -2,57 +2,172 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Moteur de Recherche Stylé</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Moteur de Recherche de Monstres</title>
+  <style>
+    /* RESET */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f7fa;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+      min-height: 100vh;
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    /* Champ de recherche stylé */
+    .input__container {
+      position: relative;
+      background: rgba(255, 255, 255, 0.664);
+      padding: 10px 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      border-radius: 22px;
+      max-width: 400px;
+      width: 100%;
+      transition: transform 400ms;
+      transform-style: preserve-3d;
+      transform: rotateX(15deg) rotateY(-20deg);
+      perspective: 500px;
+    }
+
+    .shadow__input {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      bottom: 0;
+      z-index: -1;
+      filter: blur(30px);
+      border-radius: 20px;
+      background-color: #999cff;
+      background-image: radial-gradient(at 85% 51%, hsla(60,60%,61%,1) 0px, transparent 50%),
+        radial-gradient(at 74% 68%, hsla(235,69%,77%,1) 0px, transparent 50%),
+        radial-gradient(at 64% 79%, hsla(284,72%,73%,1) 0px, transparent 50%),
+        radial-gradient(at 75% 16%, hsla(283,60%,72%,1) 0px, transparent 50%),
+        radial-gradient(at 90% 65%, hsla(153,70%,64%,1) 0px, transparent 50%),
+        radial-gradient(at 91% 83%, hsla(283,74%,69%,1) 0px, transparent 50%),
+        radial-gradient(at 72% 91%, hsla(213,75%,75%,1) 0px, transparent 50%);
+    }
+
+    .input__search {
+      width: 100%;
+      border-radius: 20px;
+      outline: none;
+      border: none;
+      padding: 8px;
+      font-size: 16px;
+      background-color: white;
+    }
+
+    .input__button__shadow {
+      cursor: pointer;
+      border: none;
+      background: none;
+      transition: transform 400ms, background 400ms;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 12px;
+      padding: 5px;
+      font-size: 20px;
+    }
+
+    .input__button__shadow:hover {
+      background: rgba(255, 255, 255, 0.411);
+    }
+
+    #results {
+      margin-top: 30px;
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .result {
+      background: white;
+      border-radius: 10px;
+      padding: 15px 20px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .result a {
+      color: #0984e3;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .result a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .input__container {
+        max-width: 100%;
+        margin: 0 10px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-  <div class="container">
-    <h1>🔍 Moteur de Recherche Stylé</h1>
+  <h1>👾 Moteur de Recherche de Monstres</h1>
 
-    <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Tape ta recherche ici...">
-      <button onclick="effectuerRecherche()">Rechercher</button>
-    </div>
-
-    <div class="results" id="results"></div>
+  <div class="input__container">
+    <span class="shadow__input"></span>
+    <input type="text" class="input__search" id="searchInput" placeholder="Tape le nom d’un monstre...">
+    <button class="input__button__shadow" onclick="effectuerRecherche()">🔍</button>
   </div>
+
+  <div id="results"></div>
 
   <script>
     function effectuerRecherche() {
       const query = document.getElementById('searchInput').value.trim();
-      if (!query) return alert("Entre une recherche !");
+      if (!query) return alert("Entre un nom de monstre !");
 
-      const url = `https://fr.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`;
+      const resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = "<p>Recherche en cours...</p>";
 
-      fetch(url)
-        .then(res => res.json())
-        .then(data => {
-          const resultsDiv = document.getElementById("results");
-          resultsDiv.innerHTML = "";
+      // Simule une recherche (à remplacer par une vraie base plus tard)
+      setTimeout(() => {
+        const résultatsSimulés = [
+          { titre: "Vampire – Créature nocturne assoiffée de sang", lien: "https://fr.wikipedia.org/wiki/Vampire" },
+          { titre: "Loup-garou – Bête transformée les nuits de pleine lune", lien: "https://fr.wikipedia.org/wiki/Loup-garou" },
+          { titre: "Démon – Entité maléfique dans plusieurs cultures", lien: "https://fr.wikipedia.org/wiki/D%C3%A9mon" }
+        ].filter(r => r.titre.toLowerCase().includes(query.toLowerCase()));
 
-          if (data.extract) {
-            resultsDiv.innerHTML = `
-              <table>
-                <tr><th>Titre</th><th>Description</th></tr>
-                <tr>
-                  <td>
-                    <a href="${data.content_urls.desktop.page}" target="_blank">${data.title}</a>
-                    ${data.thumbnail ? `<br><img src="${data.thumbnail.source}" alt="${data.title}" style="max-width:150px; margin-top:10px; border-radius:8px;">` : ''}
-                  </td>
-                  <td>${data.extract}</td>
-                </tr>
-              </table>
-            `;
-          } else {
-            resultsDiv.innerHTML = "<p>Aucun résultat trouvé sur Wikipédia.</p>";
-          }
-        })
-        .catch(err => {
-          console.error(err);
-          alert("Erreur lors de la recherche.");
+        resultsDiv.innerHTML = "";
+
+        if (résultatsSimulés.length === 0) {
+          resultsDiv.innerHTML = "<p>Aucun monstre trouvé.</p>";
+          return;
+        }
+
+        résultatsSimulés.forEach(r => {
+          const div = document.createElement("div");
+          div.className = "result";
+          div.innerHTML = `<a href="${r.lien}" target="_blank">${r.titre}</a><br><small>${r.lien}</small>`;
+          resultsDiv.appendChild(div);
         });
+      }, 1000); // simulate delay
     }
   </script>
 
