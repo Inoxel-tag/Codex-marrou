@@ -86,98 +86,59 @@
       color: var(--accent);
     }
 
-    .search-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px;
+    .dissertation-container {
+      padding: 30px;
       background-color: var(--box);
-      border-radius: 50px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
 
-    .search-bar input {
-      width: 75%;
-      padding: 10px;
-      border: none;
-      border-radius: 50px;
-      font-size: 1rem;
-      outline: none;
-      background-color: #fff;
-    }
-
-    body.dark .search-bar input {
-      background-color: #444;
-      color: #fff;
-    }
-
-    .search-bar button {
-      padding: 10px 15px;
-      border: none;
-      background-color: var(--accent);
-      color: #ffffff;
-      font-size: 1rem;
-      cursor: pointer;
-      border-radius: 50px;
-      transition: background-color 0.3s ease;
-    }
-
-    .search-bar button:hover {
-      background-color: var(--hover);
-    }
-
-    .results table {
+    .dissertation-container input, .dissertation-container textarea {
       width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-
-    .results table th,
-    .results table td {
-      padding: 10px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-
-    .results img {
-      margin-top: 10px;
-      border-radius: 8px;
-      max-width: 100px;
-    }
-
-    .chat-box {
-      max-height: 300px;
-      overflow-y: auto;
-      background-color: var(--box);
-      padding: 10px;
-      border-radius: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #ddd;
-    }
-
-    .chat-box p {
-      margin-bottom: 10px;
-    }
-
-    textarea {
-      width: 100%;
-      padding: 10px;
+      padding: 15px;
+      margin-top: 15px;
       border-radius: 10px;
       border: 1px solid #ddd;
-      resize: none;
-      margin-bottom: 10px;
-      background-color: var(--box);
+      background-color: #fafafa;
+      font-size: 1.2rem;
       color: var(--text);
+      resize: none;
+    }
+
+    .dissertation-container textarea {
+      height: 250px;
+    }
+
+    .dissertation-container h2 {
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    .dissertation-container .essay-section {
+      margin-bottom: 20px;
+    }
+
+    .dissertation-container .essay-section h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      color: var(--accent);
+    }
+
+    .dissertation-container .essay-section p {
+      font-size: 1.1rem;
+      line-height: 1.5;
+      margin: 10px 0;
     }
 
     button {
-      padding: 10px 15px;
+      padding: 12px 18px;
       background-color: var(--accent);
       color: #fff;
       border: none;
       border-radius: 10px;
       cursor: pointer;
       transition: background-color 0.3s ease;
+      font-size: 1.1rem;
     }
 
     button:hover {
@@ -189,6 +150,7 @@
       margin: 10px 0;
       font-weight: bold;
     }
+
   </style>
 </head>
 <body>
@@ -225,8 +187,24 @@
     <h2>Rédiger une Dissertation</h2>
     <div class="username-display" id="usernameDisplayDissertation"></div>
     <input type="text" id="essaySubject" placeholder="Entrez le sujet de la dissertation" />
-    <textarea id="essayOutput" rows="10" placeholder="La dissertation sera générée ici..." readonly></textarea>
     <button onclick="genererDissertation()">Générer la dissertation</button>
+    
+    <div id="generatedEssay" style="display: none;">
+      <div class="essay-section">
+        <h3>Introduction</h3>
+        <p id="introduction"></p>
+      </div>
+      <div class="essay-section">
+        <h3>Corps de la dissertation</h3>
+        <p id="body"></p>
+      </div>
+      <div class="essay-section">
+        <h3>Conclusion</h3>
+        <p id="conclusion"></p>
+      </div>
+    </div>
+    
+    <textarea id="essayOutput" rows="10" placeholder="La dissertation sera générée ici..." readonly></textarea>
   </div>
 
   <script>
@@ -317,12 +295,13 @@
 
       const conclusion = `Conclusion : En somme, le sujet "${subject}" mérite une attention particulière en raison de son impact dans plusieurs domaines. Nous avons vu comment les théories et les recherches actuelles nous aident à mieux comprendre cette question. Pour l'avenir, il est essentiel de continuer à explorer ce sujet afin de mieux appréhender ses évolutions.`;
 
-      const dissertationText = `${introduction}\n\n${body}\n\n${conclusion}`;
-      
-      document.getElementById("essayOutput").value = dissertationText;
+      document.getElementById("introduction").textContent = introduction;
+      document.getElementById("body").textContent = body;
+      document.getElementById("conclusion").textContent = conclusion;
+
+      document.getElementById("generatedEssay").style.display = "block";
     }
 
-    // Affichage du nom d'utilisateur
     window.onload = () => {
       if (localStorage.getItem("darkMode") === "true") {
         document.body.classList.add("dark");
