@@ -70,7 +70,7 @@
       color: #fff;
     }
 
-    .container, .chat-container {
+    .container, .chat-container, .dissertation-container {
       background-color: var(--bg-alt);
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       border-radius: 12px;
@@ -80,7 +80,7 @@
       margin: 90px auto 20px auto;
     }
 
-    .container h1, .chat-container h2 {
+    .container h1, .chat-container h2, .dissertation-container h2 {
       text-align: center;
       margin-bottom: 20px;
       color: var(--accent);
@@ -189,73 +189,6 @@
       margin: 10px 0;
       font-weight: bold;
     }
-
-    /* Dissertation Section */
-    #dissertationPage {
-      background-color: var(--bg-alt);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      border-radius: 12px;
-      margin: 90px auto 20px auto;
-      max-width: 900px;
-      text-align: center;
-    }
-
-    #dissertationPage h1 {
-      font-size: 2rem;
-      margin-bottom: 20px;
-      color: var(--accent);
-    }
-
-    .input-container {
-      margin-bottom: 20px;
-    }
-
-    #essaySubject {
-      padding: 10px;
-      width: 80%;
-      max-width: 500px;
-      border: 1px solid #ccc;
-      border-radius: 20px;
-      margin-bottom: 10px;
-      font-size: 1.1rem;
-    }
-
-    button {
-      padding: 10px 15px;
-      background-color: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: var(--hover);
-    }
-
-    #essayOutput {
-      width: 100%;
-      height: 300px;
-      padding: 20px;
-      font-size: 1rem;
-      background-color: #f9f9f9;
-      border-radius: 12px;
-      border: 1px solid #ddd;
-      color: #333;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      line-height: 1.6;
-      resize: none;
-      text-align: left;
-      margin-top: 20px;
-    }
-
-    #essayOutput::placeholder {
-      color: #888;
-      font-style: italic;
-    }
   </style>
 </head>
 <body>
@@ -263,7 +196,7 @@
   <div class="navbar">
     <button onclick="showSearchPage()">🔍 Recherche</button>
     <button onclick="showChatPage()">💬 Discussion</button>
-    <button onclick="showDissertationPage()">📝 Dissertation</button>
+    <button onclick="showDissertationPage()">📖 Dissertation</button>
     <button onclick="toggleDarkMode()">🌙 Mode Sombre</button>
     <button onclick="logout()">🚪 Déconnexion</button>
   </div>
@@ -288,14 +221,12 @@
     <button onclick="envoyerMessage()">Envoyer</button>
   </div>
 
-  <div id="dissertationPage" class="container" style="display: none;">
-    <h1>Rédiger une dissertation</h1>
-    <div class="input-container">
-      <input type="text" id="essaySubject" placeholder="Entrez le sujet de la dissertation...">
-      <button onclick="genererDissertation()">Générer la dissertation</button>
-    </div>
-
-    <textarea id="essayOutput" rows="10" placeholder="La dissertation générée apparaîtra ici..." readonly></textarea>
+  <div id="dissertationPage" class="dissertation-container" style="display: none;">
+    <h2>Rédiger une Dissertation</h2>
+    <div class="username-display" id="usernameDisplayDissertation"></div>
+    <input type="text" id="essaySubject" placeholder="Entrez le sujet de la dissertation" />
+    <textarea id="essayOutput" rows="10" placeholder="La dissertation sera générée ici..." readonly></textarea>
+    <button onclick="genererDissertation()">Générer la dissertation</button>
   </div>
 
   <script>
@@ -380,12 +311,18 @@
       const subject = document.getElementById("essaySubject").value.trim();
       if (!subject) return alert("Entrez un sujet de dissertation");
 
-      // Générer la dissertation basée sur le sujet (remplacer cette ligne par l'intégration avec une API ou un générateur)
-      const dissertationText = `Voici une dissertation générée pour le sujet "${subject}". Vous pouvez ajouter du texte ici.`;
+      const introduction = `Introduction : Ce sujet, "${subject}", est d'une grande importance dans le domaine de l'étude des sciences humaines et sociales. Nous allons explorer les aspects clés de ce sujet et examiner ses implications dans le contexte moderne.`;
+
+      const body = `Corps de la dissertation : La question de "${subject}" soulève des problématiques essentielles. Tout d'abord, il est crucial de comprendre les concepts fondamentaux associés à ce sujet. Ensuite, nous analyserons les différentes perspectives et théories qui ont émergé autour de ce thème. De plus, nous aborderons les débats actuels et les enjeux qui en découlent dans la société contemporaine.`;
+
+      const conclusion = `Conclusion : En somme, le sujet "${subject}" mérite une attention particulière en raison de son impact dans plusieurs domaines. Nous avons vu comment les théories et les recherches actuelles nous aident à mieux comprendre cette question. Pour l'avenir, il est essentiel de continuer à explorer ce sujet afin de mieux appréhender ses évolutions.`;
+
+      const dissertationText = `${introduction}\n\n${body}\n\n${conclusion}`;
       
       document.getElementById("essayOutput").value = dissertationText;
     }
 
+    // Affichage du nom d'utilisateur
     window.onload = () => {
       if (localStorage.getItem("darkMode") === "true") {
         document.body.classList.add("dark");
@@ -399,6 +336,7 @@
 
       document.getElementById("usernameDisplay").textContent = `Connecté en tant que : ${username}`;
       document.getElementById("usernameDisplayChat").textContent = `Connecté en tant que : ${username}`;
+      document.getElementById("usernameDisplayDissertation").textContent = `Connecté en tant que : ${username}`;
     };
   </script>
 
