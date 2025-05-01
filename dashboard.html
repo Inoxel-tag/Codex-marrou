@@ -312,59 +312,12 @@
       document.getElementById("dissertationPage").style.display = "block";
     }
 
-    function envoyerMessage() {
-      const input = document.getElementById("chatInput");
-      const message = input.value.trim();
-      if (!message) return;
-
-      const chatBox = document.getElementById("chatBox");
-      const newMsg = document.createElement("p");
-      const username = localStorage.getItem("username") || "Utilisateur";
-      newMsg.textContent = `${username} : ${message}`;
-      chatBox.appendChild(newMsg);
-      chatBox.scrollTop = chatBox.scrollHeight;
-      input.value = "";
-    }
-
-    function effectuerRecherche() {
-      const query = document.getElementById("searchInput").value.trim();
-      if (!query) return alert("Entrez un terme de recherche");
-
-      const url = `https://fr.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`;
-
-      fetch(url)
-        .then(res => res.json())
-        .then(data => {
-          const results = document.getElementById("results");
-          results.innerHTML = "";
-
-          if (data.extract) {
-            results.innerHTML = `
-              <table>
-                <tr><th>Titre</th><th>Description</th></tr>
-                <tr>
-                  <td>
-                    <a href="${data.content_urls.desktop.page}" target="_blank">${data.title}</a>
-                    ${data.thumbnail ? `<br><img src="${data.thumbnail.source}" alt="${data.title}">` : ""}
-                  </td>
-                  <td>${data.extract}</td>
-                </tr>
-              </table>
-            `;
-          } else {
-            results.innerHTML = "<p>Aucun résultat trouvé</p>";
-          }
-        })
-        .catch(() => alert("Erreur lors de la récupération des résultats"));
-    }
-
     function toggleDarkMode() {
-      document.body.classList.toggle("dark");
+      document.body.classList.toggle('dark');
     }
 
     function logout() {
-      localStorage.removeItem("username");
-      window.location.href = "/login";
+      alert("Déconnexion réussie !");
     }
 
     function genererDissertation() {
@@ -379,23 +332,30 @@
           if (!data.extract) return alert("Aucune information trouvée pour ce sujet");
 
           // Définir l'introduction
-          document.getElementById("introduction").textContent = `Introduction : ${data.extract}`;
+          const introText = `Introduction : ${data.extract}`;
+          document.getElementById("introduction").textContent = introText;
 
-          // Exemple de développement en 3 parties, pour personnaliser selon le sujet :
-          document.getElementById("body").innerHTML = `
-            <strong>Partie 1 :</strong> Description générale du sujet. <br>
-            <strong>Partie 2 :</strong> Analyse approfondie avec les aspects majeurs. <br>
-            <strong>Partie 3 :</strong> Application et implication du sujet dans différents contextes.
+          // Développement rédigé
+          const bodyText = `
+            Le sujet de cette dissertation est particulièrement vaste et soulève plusieurs aspects essentiels. En premier lieu, nous devons aborder les principaux éléments historiques et théoriques relatifs à ce sujet. Cela nous permettra de mieux comprendre les enjeux de ce domaine.
+
+            Dans un deuxième temps, il sera nécessaire d'examiner les implications pratiques de ce sujet. Une analyse approfondie des répercussions dans le monde moderne est essentielle pour bien cerner les enjeux actuels.
+
+            Enfin, pour conclure, il sera pertinent de traiter des perspectives d'avenir liées à ce sujet et de considérer ses impacts dans différents contextes. La compréhension de ces enjeux nous permettra de proposer des solutions concrètes adaptées aux défis futurs.
           `;
+          document.getElementById("body").innerHTML = bodyText;
 
-          // Exemple de conclusion générique
-          document.getElementById("conclusion").textContent = "Conclusion : En résumé, ce sujet a des implications profondes dans plusieurs domaines, et sa compréhension est essentielle pour toute personne intéressée par ce thème.";
+          // Conclusion
+          const conclusionText = `
+            En conclusion, ce sujet soulève des questions fondamentales qui dépassent le cadre académique. Sa compréhension et ses implications sont cruciales pour le développement de nombreuses disciplines, et il est essentiel d'étudier les différents aspects évoqués dans cette dissertation.
+          `;
+          document.getElementById("conclusion").textContent = conclusionText;
 
+          // Afficher la dissertation générée
           document.getElementById("generatedEssay").style.display = "block";
         })
         .catch(() => alert("Erreur lors de la génération de la dissertation"));
     }
   </script>
-
 </body>
 </html>
