@@ -70,7 +70,7 @@
       color: #fff;
     }
 
-    .container, .chat-container {
+    .container {
       background-color: var(--bg-alt);
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       border-radius: 12px;
@@ -80,7 +80,7 @@
       margin: 90px auto 20px auto;
     }
 
-    .container h1, .chat-container h2 {
+    .container h1 {
       text-align: center;
       margin-bottom: 20px;
       color: var(--accent);
@@ -145,125 +145,17 @@
       max-width: 100px;
     }
 
-    .chat-box {
-      max-height: 300px;
-      overflow-y: auto;
-      background-color: var(--box);
-      padding: 10px;
-      border-radius: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #ddd;
-    }
-
-    .chat-box p {
-      margin-bottom: 10px;
-    }
-
-    textarea {
-      width: 100%;
-      padding: 10px;
-      border-radius: 10px;
-      border: 1px solid #ddd;
-      resize: none;
-      margin-bottom: 10px;
-      background-color: var(--box);
-      color: var(--text);
-    }
-
-    button {
-      padding: 10px 15px;
-      background-color: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: var(--hover);
-    }
-
     .username-display {
       text-align: center;
       margin: 10px 0;
       font-weight: bold;
-    }
-
-    /* Dissertation Section */
-    #dissertationPage {
-      background-color: var(--bg-alt);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      border-radius: 12px;
-      margin: 90px auto 20px auto;
-      max-width: 900px;
-      text-align: center;
-    }
-
-    #dissertationPage h1 {
-      font-size: 2rem;
-      margin-bottom: 20px;
-      color: var(--accent);
-    }
-
-    .input-container {
-      margin-bottom: 20px;
-    }
-
-    #essaySubject {
-      padding: 10px;
-      width: 80%;
-      max-width: 500px;
-      border: 1px solid #ccc;
-      border-radius: 20px;
-      margin-bottom: 10px;
-      font-size: 1.1rem;
-    }
-
-    button {
-      padding: 10px 15px;
-      background-color: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: var(--hover);
-    }
-
-    #essayOutput {
-      width: 100%;
-      height: 300px;
-      padding: 20px;
-      font-size: 1rem;
-      background-color: #f9f9f9;
-      border-radius: 12px;
-      border: 1px solid #ddd;
-      color: #333;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      line-height: 1.6;
-      resize: none;
-      text-align: left;
-      margin-top: 20px;
-    }
-
-    #essayOutput::placeholder {
-      color: #888;
-      font-style: italic;
     }
   </style>
 </head>
 <body>
 
   <div class="navbar">
-    <button onclick="showSearchPage()">🔍 Recherche</button>
-    <button onclick="showChatPage()">💬 Discussion</button>
-    <button onclick="showDissertationPage()">📝 Dissertation</button>
+    <button onclick="effectuerRecherche()">🔍 Rechercher</button>
     <button onclick="toggleDarkMode()">🌙 Mode Sombre</button>
     <button onclick="logout()">🚪 Déconnexion</button>
   </div>
@@ -278,59 +170,7 @@
     <div class="results" id="results"></div>
   </div>
 
-  <div id="chatPage" class="chat-container" style="display: none;">
-    <h2>Discussion</h2>
-    <div class="username-display" id="usernameDisplayChat"></div>
-    <div class="chat-box" id="chatBox">
-      <p><strong>Bienvenue ! Pose ta question ou partage ton idée !</strong></p>
-    </div>
-    <textarea id="chatInput" placeholder="Ton message..." rows="3"></textarea>
-    <button onclick="envoyerMessage()">Envoyer</button>
-  </div>
-
-  <div id="dissertationPage" class="container" style="display: none;">
-    <h1>Rédiger une dissertation</h1>
-    <div class="input-container">
-      <input type="text" id="essaySubject" placeholder="Entrez le sujet de la dissertation...">
-      <button onclick="genererDissertation()">Générer la dissertation</button>
-    </div>
-
-    <textarea id="essayOutput" rows="10" placeholder="La dissertation générée apparaîtra ici..." readonly></textarea>
-  </div>
-
   <script>
-    function showSearchPage() {
-      document.getElementById("searchPage").style.display = "block";
-      document.getElementById("chatPage").style.display = "none";
-      document.getElementById("dissertationPage").style.display = "none";
-    }
-
-    function showChatPage() {
-      document.getElementById("searchPage").style.display = "none";
-      document.getElementById("chatPage").style.display = "block";
-      document.getElementById("dissertationPage").style.display = "none";
-    }
-
-    function showDissertationPage() {
-      document.getElementById("searchPage").style.display = "none";
-      document.getElementById("chatPage").style.display = "none";
-      document.getElementById("dissertationPage").style.display = "block";
-    }
-
-    function envoyerMessage() {
-      const input = document.getElementById("chatInput");
-      const message = input.value.trim();
-      if (!message) return;
-
-      const chatBox = document.getElementById("chatBox");
-      const newMsg = document.createElement("p");
-      const username = localStorage.getItem("username") || "Utilisateur";
-      newMsg.textContent = `${username} : ${message}`;
-      chatBox.appendChild(newMsg);
-      chatBox.scrollTop = chatBox.scrollHeight;
-      input.value = "";
-    }
-
     function effectuerRecherche() {
       const query = document.getElementById("searchInput").value.trim();
       if (!query) return alert("Entrez un terme de recherche");
@@ -376,16 +216,6 @@
       window.location.href = "index.html";
     }
 
-    function genererDissertation() {
-      const subject = document.getElementById("essaySubject").value.trim();
-      if (!subject) return alert("Entrez un sujet de dissertation");
-
-      // Générer la dissertation basée sur le sujet (remplacer cette ligne par l'intégration avec une API ou un générateur)
-      const dissertationText = `Voici une dissertation générée pour le sujet "${subject}". Vous pouvez ajouter du texte ici.`;
-      
-      document.getElementById("essayOutput").value = dissertationText;
-    }
-
     window.onload = () => {
       if (localStorage.getItem("darkMode") === "true") {
         document.body.classList.add("dark");
@@ -398,7 +228,6 @@
       }
 
       document.getElementById("usernameDisplay").textContent = `Connecté en tant que : ${username}`;
-      document.getElementById("usernameDisplayChat").textContent = `Connecté en tant que : ${username}`;
     };
   </script>
 
